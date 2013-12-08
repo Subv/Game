@@ -1,0 +1,12 @@
+#ifndef SHARED_DEFINES_H
+#define SHARED_DEFINES_H
+
+enum TypeId
+{
+    TYPEID_PLAYER,
+    TYPEID_CREATURE,
+    TYPEID_OBJECT,
+    TYPEID_ENTITY
+};
+
+#endif
