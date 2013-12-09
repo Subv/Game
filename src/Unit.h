@@ -12,7 +12,9 @@ public:
     Unit(Game* _game);
     virtual ~Unit();
 
-    void Update(sf::Time diff);
+    virtual void Update(sf::Time diff);
+
+    virtual void StopMoving();
 
     int HealthPoints;
     sf::Vector2f Velocity;

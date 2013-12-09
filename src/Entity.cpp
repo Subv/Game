@@ -41,7 +41,7 @@ void Entity::Update(sf::Time diff)
     bool collides = map->HasCollisionAt(Position, sprite.getGlobalBounds(), intersection);
     if (collides)
     {
-        ToUnit()->Velocity.y *= -1.0f;
+        StopMoving();
         std::cout << "COLLISION DETECTED" << std::endl;
     }
 
@@ -56,6 +56,5 @@ Unit* Entity::ToUnit()
         return dynamic_cast<Unit*>(this);
     return NULL;
 }
-
 
 

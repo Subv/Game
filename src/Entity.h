@@ -29,6 +29,8 @@ public:
 
     virtual void AddToMap(Map* _map) { map = _map; }
 
+    virtual void StopMoving() = 0;
+
     Unit* ToUnit();
 
     sf::Vector2f Position;
