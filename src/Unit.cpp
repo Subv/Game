@@ -25,7 +25,7 @@ void Unit::Update(sf::Time diff)
     if (IsInAir())
         Acceleration.y = 9.8f; // Gravity acceleration
 
-    sf::Vector2f& newPos = Position;
+    sf::Vector2f& newPos = NewPosition;
 
     // Update the velocity
     Velocity.x += Acceleration.x * diff.asSeconds();
@@ -40,15 +40,27 @@ void Unit::Update(sf::Time diff)
         Velocity.y = 160.0f;
 
     // Update the position
-    newPos.x += Velocity.x * diff.asSeconds();
-    newPos.y += Velocity.y * diff.asSeconds();
+    if (Utils::CompareFloats(Velocity.x, 0.f) != Utils::COMPARE_EQUAL)
+        newPos.x += Velocity.x * diff.asSeconds();
+    
+    if (Utils::CompareFloats(Velocity.y, 0.f) != Utils::COMPARE_EQUAL)
+        newPos.y += Velocity.y * diff.asSeconds();
 
     Entity::Update(diff);
 }
 
-void Unit::StopMoving()
+void Unit::StopMoving(sf::Vector2f alongAxis)
 {
-    Velocity.y *= -1.0f;
+    if (alongAxis.x == 1.f) // Bounce when hitting a wall horizontally
+    {
+        Velocity.x *= -1.f;
+        //Acceleration.x *= -1.f;
+    }
+    if (alongAxis.y == 1.f)
+    {
+        Velocity.y = 0.f;
+        Acceleration.y = 0.f;
+    }
 }
 
 void Unit::Brake()

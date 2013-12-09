@@ -11,6 +11,7 @@ class Player;
 
 struct TileInfo
 {
+    TileInfo() {}
     TileInfo(int x, int y, sf::Sprite sprite, bool collidable) : X(x), Y(y), Sprite(sprite), Collidable(collidable) { }
 
     int X, Y;
@@ -29,7 +30,7 @@ public:
     void Update(sf::Time diff);
     void Draw();
 
-    bool HasCollisionAt(sf::Vector2f pos, sf::FloatRect& player, sf::FloatRect& intersection);
+    bool HasCollisionAt(sf::Vector2f pos, sf::FloatRect& player, sf::FloatRect& intersection, TileInfo& tile);
 
     void AddPlayer(Player* player);
 private:

@@ -6,7 +6,7 @@
 #include "SharedDefines.h"
 #include <SFML/Graphics.hpp>
 
-Entity::Entity(Game* _game) : game(_game)
+Entity::Entity(Game* _game) : game(_game), inAir(true)
 {
     Type = TYPEID_ENTITY;
 }
@@ -23,7 +23,7 @@ void Entity::LoadTexture()
 
 bool Entity::IsInAir()
 {
-    return true;
+    return inAir;
 }
 
 void Entity::Draw()
@@ -38,13 +38,35 @@ void Entity::Update(sf::Time diff)
 
     // Now we do collision detection and determine if we can actually move there
     sf::FloatRect intersection;
-    bool collides = map->HasCollisionAt(Position, sprite.getGlobalBounds(), intersection);
+    TileInfo tile;
+    bool collides = map->HasCollisionAt(NewPosition, sprite.getGlobalBounds(), intersection, tile);
     if (collides)
     {
-        StopMoving();
-        std::cout << "COLLISION DETECTED" << std::endl;
+        sf::Vector2f axis(0.f, 0.f);
+        if ((NewPosition.x >= tile.Sprite.getGlobalBounds().left && NewPosition.x <= tile.Sprite.getGlobalBounds().left + 70.f) || (NewPosition.x + 70.f > tile.Sprite.getGlobalBounds().left && NewPosition.x + 70.f < tile.Sprite.getGlobalBounds().left + 70.f))
+        {
+            axis.y = 1.f;
+            std::cout << "COLLISION DETECTED ON Y" << std::endl;
+            inAir = false;
+        }
+        else
+            inAir = true;
+
+        if ((NewPosition.y >= tile.Sprite.getGlobalBounds().top && NewPosition.y <= tile.Sprite.getGlobalBounds().top + 70.f) || (NewPosition.y + 70.f > tile.Sprite.getGlobalBounds().top && NewPosition.y + 70.f < tile.Sprite.getGlobalBounds().top + 70.f))
+        {
+            axis.x = 1.f;
+            std::cout << "COLLISION DETECTED ON X" << std::endl;
+        }
+
+        StopMoving(axis);
+    }
+    else
+    {
+        std::cout << "FREE FALLING" << std::endl;
+        inAir = true;
     }
 
+    Position = NewPosition;
     sprite.setPosition(Position);
 
     Draw();

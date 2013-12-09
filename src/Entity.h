@@ -29,12 +29,14 @@ public:
 
     virtual void AddToMap(Map* _map) { map = _map; }
 
-    virtual void StopMoving() = 0;
+    virtual void StopMoving(sf::Vector2f alongAxis) = 0;
 
     Unit* ToUnit();
 
+    sf::Vector2f NewPosition;
     sf::Vector2f Position;
 protected:
+    bool inAir;
     Map* map;
     TypeId Type;
     Game* game;
