@@ -16,16 +16,16 @@ Player::~Player()
 void Player::Update(sf::Time diff)
 {
     // Handle movement
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-        Position.y += 1.0f;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-        Position.y -= 1.0f;
+        Velocity.y -= 1.0f;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-        Position.x -= 1.0f;
+        Velocity.x -= 1.0f;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-        Position.x += 1.0f;
+        Velocity.x += 1.0f;
 
-    Entity::Update(diff);
+    std::cout << "Velocity: X: " << Velocity.x << " Y: " << Velocity.y << std::endl;
+
+    Unit::Update(diff);
 }
 
 void Player::LoadTexture()

@@ -6,6 +6,8 @@
 #include "SharedDefines.h"
 
 class Game;
+class Map;
+class Unit;
 
 class Entity
 {
@@ -20,8 +22,18 @@ public:
 
     virtual TypeId GetTypeId() { return Type; }
 
+    virtual float GetPositionX() { return Position.x; }
+    virtual float GetPositionY() { return Position.y; }
+
+    virtual bool IsInAir();
+
+    virtual void AddToMap(Map* _map) { map = _map; }
+
+    Unit* ToUnit();
+
     sf::Vector2f Position;
 protected:
+    Map* map;
     TypeId Type;
     Game* game;
     sf::Texture texture;

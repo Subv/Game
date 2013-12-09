@@ -4,8 +4,19 @@
 #include <SFML/System/Time.hpp>
 #include <SFML/Graphics.hpp>
 #include <vector>
+#include <list>
 
 class Game;
+class Player;
+
+struct TileInfo
+{
+    TileInfo(int x, int y, sf::Sprite sprite, bool collidable) : X(x), Y(y), Sprite(sprite), Collidable(collidable) { }
+
+    int X, Y;
+    bool Collidable;
+    sf::Sprite Sprite;
+};
 
 class Map
 {
@@ -17,9 +28,14 @@ public:
 
     void Update(sf::Time diff);
     void Draw();
+
+    bool HasCollisionAt(sf::Vector2f pos, sf::FloatRect& player);
+
+    void AddPlayer(Player* player);
 private:
     std::vector<std::vector<std::string> > TileData;
-    std::vector<std::vector<sf::Sprite> > Tiles;
+    std::vector<TileInfo> Tiles;
+    std::list<Player*> Players;
     Game* game;
 };
 #endif

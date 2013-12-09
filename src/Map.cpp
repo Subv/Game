@@ -1,6 +1,8 @@
 #include "Map.h"
 #include "ResourceManager.h"
 #include "Game.h"
+#include "Player.h"
+#include <list>
 #include <fstream>
 #include <sstream>
 
@@ -36,15 +38,7 @@ void Map::Load()
         
         TileData.push_back(TileLine);
     }
-}
 
-void Map::Update(sf::Time diff)
-{
-    Draw();
-}
-
-void Map::Draw()
-{
     for (int i = 0; i < TileData.size(); ++i)
     {
         for (int j = 0; j < TileData[i].size(); ++j)
@@ -53,17 +47,27 @@ void Map::Draw()
                 continue;
 
             sf::Vector2f mapPosition(j * 70.0f, i * 70.0f);
-            
+            bool collides = false;
+
             std::string fileName = "none";
 
             if (TileData[i][j] == "J")
+            {
+                collides = true;
                 fileName = "brickWall.png";
+            }
             else if (TileData[i][j] == "K")
+            {
+                collides = true;
                 fileName = "grass.png";
+            }
             else if (TileData[i][j] == "L")
                 fileName = "grassCenter.png";
             else if (TileData[i][j] == "M")
+            {
+                collides = true;
                 fileName = "bridgeLogs.png";
+            }
             else if (TileData[i][j] == "N")
                 fileName = "hill_large.png";
             else if (TileData[i][j] == "O")
@@ -79,8 +83,36 @@ void Map::Draw()
             {
                 sf::Sprite block(sResourceManager->GetTile(fileName));
                 block.setPosition(mapPosition);
-                game->GetWindow().draw(block);
+                
+                TileInfo info(j, i, block, collides);
+                Tiles.push_back(info);
             }
         }
     }
+}
+
+void Map::Update(sf::Time diff)
+{
+    Draw();
+}
+
+void Map::Draw()
+{
+    for (auto itr = Tiles.begin(); itr != Tiles.end(); ++itr)
+        game->GetWindow().draw(itr->Sprite);
+}
+
+bool Map::HasCollisionAt(sf::Vector2f pos, sf::FloatRect& player)
+{
+    sf::FloatRect check(pos.x, pos.y, player.width, player.height);
+    for (auto itr = Tiles.begin(); itr != Tiles.end(); ++itr)
+        if (itr->Collidable && itr->Sprite.getGlobalBounds().intersects(check))
+            return true;
+    return false;
+}
+
+void Map::AddPlayer(Player* player)
+{
+    Players.push_back(player);
+    player->AddToMap(this);
 }

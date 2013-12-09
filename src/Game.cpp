@@ -9,7 +9,7 @@ Game* Game::_instance = NULL;
 
 Game::Game() : window(sf::VideoMode(1000, 600), "Game"), CurrentMap(NULL), MenuMap(NULL), fps(0), debugMode(false), State(GAME_STATE_NONE)
 {
-    //window.setFramerateLimit(120);
+    window.setFramerateLimit(60);
 }
 
 Game::~Game()
@@ -103,6 +103,13 @@ void Game::Update(sf::Time diff)
 
     DrawTexts();
     window.display();
+
+    if (State == GAME_STATE_PLAYING)
+    {
+        /*sf::View view = GetWindow().getView();
+        view.move(sf::Vector2f(0.1f, 0));
+        GetWindow().setView(view);*/
+    }
 }
 
 void Game::DrawTexts()
@@ -149,6 +156,7 @@ void Game::PrepareWorld()
 
     Player* player1 = new Player(this);
     player1->LoadTexture();
+    CurrentMap->AddPlayer(player1);
 
     Players.push_back(player1);
     State = GAME_STATE_PLAYING;

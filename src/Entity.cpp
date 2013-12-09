@@ -1,6 +1,8 @@
 #include "Entity.h"
 #include "Game.h"
 #include "ResourceManager.h"
+#include "Unit.h"
+#include "Map.h"
 #include "SharedDefines.h"
 #include <SFML/Graphics.hpp>
 
@@ -16,7 +18,12 @@ Entity::~Entity()
 
 void Entity::LoadTexture()
 {
-    
+
+}
+
+bool Entity::IsInAir()
+{
+    return true;
 }
 
 void Entity::Draw()
@@ -26,8 +33,24 @@ void Entity::Draw()
 
 void Entity::Update(sf::Time diff)
 {
+    if (!map)
+        return;
+
+    // Now we do collision detection and determine if we can actually move there
+    bool collides = map->HasCollisionAt(Position, sprite.getGlobalBounds());
+    if (collides)
+        std::cout << "COLLISION DETECTED" << std::endl;
+
     sprite.setPosition(Position);
+
     Draw();
+}
+
+Unit* Entity::ToUnit()
+{
+    if (Type == TYPEID_PLAYER || Type == TYPEID_CREATURE)
+        return dynamic_cast<Unit*>(this);
+    return NULL;
 }
 
 
