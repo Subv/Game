@@ -47,6 +47,10 @@ void Entity::Update(sf::Time diff)
         {
             axis.y = 1.f;
             std::cout << "COLLISION DETECTED ON Y" << std::endl;
+
+            if (ToUnit()->IsJumping() && Position.y < NewPosition.y)
+                ToUnit()->jumping = false;
+
             inAir = false;
         }
         else

@@ -1,7 +1,7 @@
 #include "Unit.h"
 #include "Utils.h"
 
-Unit::Unit(Game* _game) : Entity(_game)
+Unit::Unit(Game* _game) : Entity(_game), jumping(false)
 {
     HealthPoints = 0;
 
@@ -23,7 +23,7 @@ void Unit::Update(sf::Time diff)
     // * The Y coordinate increases as we go down the screen, and decreases as we go up, hence the gravity must be positive for the characters to fall
 
     if (IsInAir())
-        Acceleration.y = 9.8f; // Gravity acceleration
+        Acceleration.y = 40.f; // Gravity acceleration
 
     sf::Vector2f& newPos = NewPosition;
 
@@ -56,7 +56,7 @@ void Unit::StopMoving(sf::Vector2f alongAxis)
         Velocity.x *= -1.f;
         //Acceleration.x *= -1.f;
     }
-    if (alongAxis.y == 1.f)
+    if (alongAxis.y == 1.f && !IsJumping())
     {
         Velocity.y = 0.f;
         Acceleration.y = 0.f;
@@ -77,5 +77,19 @@ void Unit::Brake()
             Acceleration.x = -15.0f;
         else if (result == Utils::COMPARE_LESS_THAN)
             Acceleration.x = 15.0f;
+    }
+}
+
+void Unit::Jump()
+{
+    if (!IsInAir() && !IsJumping())
+    {
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && Velocity.x > 0.f)
+            Velocity.x *= -1.f;
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) && Velocity.x < 0.f)
+            Velocity.x *= -1.f;
+
+        jumping = true;
+        Velocity.y = -40.f;
     }
 }

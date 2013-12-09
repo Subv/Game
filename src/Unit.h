@@ -16,8 +16,10 @@ public:
 
     virtual void StopMoving(sf::Vector2f alongAxis);
     virtual void Brake();
-
+    virtual void Jump();
+    virtual bool IsJumping() { return jumping; }
     int HealthPoints;
+    bool jumping;
     sf::Vector2f Velocity;
     sf::Vector2f Acceleration;
 };

@@ -74,6 +74,8 @@ void Game::Update(sf::Time diff)
                     case sf::Keyboard::Space:
                         if (State == GAME_STATE_MENU)
                             MenuMap->ChangeMenu(false);
+                        else if (State == GAME_STATE_PLAYING)
+                            GetPlayer()->Jump();
                         break;
                 }
                 break;

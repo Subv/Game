@@ -15,7 +15,7 @@ public:
 
     void Update(sf::Time diff);
     void LoadTexture();
-    
+
     int PlayerNumber;
 };
 #endif
