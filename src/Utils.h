@@ -1,5 +1,6 @@
 #ifndef UTILS_H
 #define UTILS_H
+#include <limits>
 
 namespace Utils
 {
@@ -10,6 +11,6 @@ namespace Utils
         COMPARE_LESS_THAN,
         COMPARE_GREATER_THAN
     };
-    ComparisonResult CompareFloats(float x, float y);
+    ComparisonResult CompareFloats(float x, float y, double epsilon = std::numeric_limits<double>::epsilon());
 }
 #endif

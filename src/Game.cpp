@@ -106,9 +106,9 @@ void Game::Update(sf::Time diff)
 
     if (State == GAME_STATE_PLAYING)
     {
-        /*sf::View view = GetWindow().getView();
-        view.move(sf::Vector2f(0.1f, 0));
-        GetWindow().setView(view);*/
+        sf::View view = GetWindow().getView();
+        view.setCenter(GetPlayer(0)->Position);
+        //GetWindow().setView(view);
     }
 }
 

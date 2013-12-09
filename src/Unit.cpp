@@ -25,9 +25,6 @@ void Unit::Update(sf::Time diff)
     if (IsInAir())
         Acceleration.y = 9.8f; // Gravity acceleration
 
-    if (Utils::CompareFloats(Velocity.x, 0.f) == Utils::COMPARE_GREATER_THAN || Utils::CompareFloats(Velocity.x, 0.f) == Utils::COMPARE_LESS_THAN)
-        Acceleration.x = -10.f * ((0 < Velocity.x) - (Velocity.x < 0)); // Friction by air horizontally
-
     sf::Vector2f& newPos = Position;
 
     // Update the velocity
@@ -42,12 +39,6 @@ void Unit::Update(sf::Time diff)
     if (Velocity.y > 160.0f) // Terminal vertical velocity
         Velocity.y = 160.0f;
 
-    if (Utils::CompareFloats(Velocity.x, 0.f) == Utils::COMPARE_EQUAL)
-        Velocity.x = 0.f;
-
-    if (Utils::CompareFloats(Velocity.y, 0.f) == Utils::COMPARE_EQUAL)
-        Velocity.y = 0.f;
-
     // Update the position
     newPos.x += Velocity.x * diff.asSeconds();
     newPos.y += Velocity.y * diff.asSeconds();
@@ -58,4 +49,21 @@ void Unit::Update(sf::Time diff)
 void Unit::StopMoving()
 {
     Velocity.y *= -1.0f;
+}
+
+void Unit::Brake()
+{
+    if (Utils::CompareFloats(Velocity.x, 0.f, 0.5f) == Utils::COMPARE_EQUAL)
+    {
+        Acceleration.x = 0.f;
+        Velocity.x = 0.f;
+    }
+    else
+    {
+        Utils::ComparisonResult result = Utils::CompareFloats(Velocity.x, 0.f);
+        if (result == Utils::COMPARE_GREATER_THAN)
+            Acceleration.x = -15.0f;
+        else if (result == Utils::COMPARE_LESS_THAN)
+            Acceleration.x = 15.0f;
+    }
 }

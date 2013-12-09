@@ -15,6 +15,7 @@ public:
     virtual void Update(sf::Time diff);
 
     virtual void StopMoving();
+    virtual void Brake();
 
     int HealthPoints;
     sf::Vector2f Velocity;
