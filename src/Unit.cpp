@@ -53,13 +53,16 @@ void Unit::StopMoving(sf::Vector2f alongAxis)
 {
     if (alongAxis.x == 1.f) // Bounce when hitting a wall horizontally
     {
-        Velocity.x *= -1.f;
+        Velocity.x = 0.f;
         //Acceleration.x *= -1.f;
     }
     if (alongAxis.y == 1.f && !IsJumping())
     {
         Velocity.y = 0.f;
-        Acceleration.y = 0.f;
+        if (IsInAir())
+            Acceleration.y = 40.f;
+        else
+            Acceleration.y = 0.f;
     }
 }
 
@@ -90,6 +93,6 @@ void Unit::Jump()
             Velocity.x *= -1.f;
 
         jumping = true;
-        Velocity.y = -40.f;
+        Velocity.y = -100.f;
     }
 }

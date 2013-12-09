@@ -35,7 +35,8 @@ void Player::Update(sf::Time diff)
         else
             Brake();
     }
-    std::cout << "Velocity: X: " << Velocity.x << " Y: " << Velocity.y << std::endl;
+    
+    //std::cout << "Velocity: X: " << Velocity.x << " Y: " << Velocity.y << std::endl;
 
     Unit::Update(diff);
 }

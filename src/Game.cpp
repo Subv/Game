@@ -77,6 +77,9 @@ void Game::Update(sf::Time diff)
                         else if (State == GAME_STATE_PLAYING)
                             GetPlayer()->Jump();
                         break;
+                    case sf::Keyboard::R:
+                        PrepareWorld();
+                        break;
                 }
                 break;
             }
@@ -109,8 +112,10 @@ void Game::Update(sf::Time diff)
     if (State == GAME_STATE_PLAYING)
     {
         sf::View view = GetWindow().getView();
-        view.setCenter(GetPlayer(0)->Position);
-        //GetWindow().setView(view);
+        sf::Vector2f pos = view.getCenter();
+        pos.x = GetPlayer()->GetPositionX();
+        view.setCenter(pos);
+        GetWindow().setView(view);
     }
 }
 
@@ -155,6 +160,14 @@ void Game::PrepareWorld()
     delete CurrentMap;
     CurrentMap = new Map(this);
     CurrentMap->Load();
+
+    for (auto itr = Players.begin(); itr != Players.end(); ++itr)
+        delete *itr;
+    Players.clear();
+
+    for (auto itr = Entities.begin(); itr != Entities.end(); ++itr)
+        delete *itr;
+    Entities.clear();
 
     Player* player1 = new Player(this, 0);
     player1->LoadTexture();
