@@ -10,10 +10,12 @@ class Game;
 class Player : public Unit
 {
 public:
-    Player(Game* _game);
+    Player(Game* _game, int index);
     ~Player();
 
     void Update(sf::Time diff);
     void LoadTexture();
+    
+    int PlayerNumber;
 };
 #endif

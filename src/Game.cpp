@@ -136,7 +136,7 @@ void Game::DrawTexts()
 
         if (!Players.empty())
         {
-            Player* plr = Players.front();
+            Player* plr = GetPlayer(0);
             sf::Text posText("X: " + std::to_string(plr->Position.x) + " Y: " + std::to_string(plr->Position.y), font);
             posText.setColor(sf::Color::Red);
             posText.setStyle(sf::Text::Style::Bold);
@@ -154,11 +154,16 @@ void Game::PrepareWorld()
     CurrentMap = new Map(this);
     CurrentMap->Load();
 
-    Player* player1 = new Player(this);
+    Player* player1 = new Player(this, 0);
     player1->LoadTexture();
     CurrentMap->AddPlayer(player1);
 
+    /*Player* player2 = new Player(this, 1);
+    player2->LoadTexture();
+    CurrentMap->AddPlayer(player2);*/
+
     Players.push_back(player1);
+    //Players.push_back(player2);
     State = GAME_STATE_PLAYING;
 }
 
