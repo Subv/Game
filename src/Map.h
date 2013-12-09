@@ -29,7 +29,7 @@ public:
     void Update(sf::Time diff);
     void Draw();
 
-    bool HasCollisionAt(sf::Vector2f pos, sf::FloatRect& player);
+    bool HasCollisionAt(sf::Vector2f pos, sf::FloatRect& player, sf::FloatRect& intersection);
 
     void AddPlayer(Player* player);
 private:

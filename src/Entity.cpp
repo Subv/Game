@@ -37,9 +37,13 @@ void Entity::Update(sf::Time diff)
         return;
 
     // Now we do collision detection and determine if we can actually move there
-    bool collides = map->HasCollisionAt(Position, sprite.getGlobalBounds());
+    sf::FloatRect intersection;
+    bool collides = map->HasCollisionAt(Position, sprite.getGlobalBounds(), intersection);
     if (collides)
+    {
+        ToUnit()->Velocity.y *= -1.0f;
         std::cout << "COLLISION DETECTED" << std::endl;
+    }
 
     sprite.setPosition(Position);
 
