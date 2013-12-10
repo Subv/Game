@@ -52,7 +52,7 @@ Unit* Entity::ToUnit()
 {
     if (Type == TYPEID_PLAYER || Type == TYPEID_CREATURE)
         return dynamic_cast<Unit*>(this);
-    return NULL;
+    return nullptr;
 }
 
 

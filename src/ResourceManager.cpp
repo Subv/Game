@@ -1,6 +1,6 @@
 #include "ResourceManager.h"
 
-ResourceManager* ResourceManager::_instance = NULL;
+ResourceManager* ResourceManager::_instance = nullptr;
 
 ResourceManager::ResourceManager() : ResourcesDir("C:/Users/Sebastian/Documents/Game/Code/Resources/")
 {

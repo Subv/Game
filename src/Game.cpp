@@ -5,9 +5,9 @@
 #include "Menu.h"
 #include "ResourceManager.h"
 
-Game* Game::_instance = NULL;
+Game* Game::_instance = nullptr;
 
-Game::Game() : window(sf::VideoMode(1000, 600), "Game"), CurrentMap(NULL), MenuMap(NULL), fps(0), debugMode(false), State(GAME_STATE_NONE)
+Game::Game() : window(sf::VideoMode(1000, 600), "Game"), CurrentMap(nullptr), MenuMap(nullptr), fps(0), debugMode(false), State(GAME_STATE_NONE)
 {
     window.setFramerateLimit(60);
 }
@@ -185,13 +185,13 @@ void Game::PrepareWorld()
 Player* Game::GetPlayer(int index /*= 0*/)
 {
     if (Players.empty())
-        return NULL;
+        return nullptr;
 
     auto itr = Players.begin();
     std::advance(itr, index);
     
     if (itr == Players.end())
-        return NULL;
+        return nullptr;
 
     return *itr;
 }
