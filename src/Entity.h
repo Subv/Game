@@ -20,12 +20,12 @@ public:
 
     virtual void LoadTexture();
 
-    virtual TypeId GetTypeId() { return Type; }
+    virtual TypeId GetTypeId() const { return Type; }
 
-    virtual float GetPositionX() { return Position.x; }
-    virtual float GetPositionY() { return Position.y; }
+    virtual float GetPositionX() const { return Position.x; }
+    virtual float GetPositionY() const { return Position.y; }
 
-    virtual bool IsInAir();
+    virtual bool IsInAir() const { return inAir; };
 
     virtual void AddToMap(Map* _map) { map = _map; }
 

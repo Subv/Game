@@ -17,7 +17,7 @@ public:
     virtual void StopMoving(sf::Vector2f alongAxis) override;
     virtual void Brake();
     virtual void Jump();
-    virtual bool IsJumping() { return jumping; }
+    virtual bool IsJumping() const { return jumping; }
 
     int HealthPoints;
     bool jumping;

@@ -23,11 +23,6 @@ void Entity::LoadTexture()
 
 }
 
-bool Entity::IsInAir()
-{
-    return inAir;
-}
-
 void Entity::Draw()
 {
     game->GetWindow().draw(sprite);

@@ -41,7 +41,7 @@ void Game::Start()
     }
 }
 
-void Game::Update(sf::Time diff)
+void Game::Update(sf::Time const diff)
 {
     // Handle the events
     sf::Event event;

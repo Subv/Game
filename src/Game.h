@@ -33,7 +33,7 @@ public:
     }
 
     void Start();
-    void Update(sf::Time diff);
+    void Update(sf::Time const diff);
     void DrawTexts();
 
     sf::RenderWindow& GetWindow() { return window; }
