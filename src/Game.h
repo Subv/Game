@@ -22,6 +22,8 @@ enum GameState
 class Game
 {
 public:
+    friend Map;
+
     Game();
     ~Game();
 

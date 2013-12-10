@@ -45,7 +45,7 @@ public:
 private:
     std::vector<std::vector<std::string> > TileData;
     std::vector<TileInfo> Tiles;
-    std::list<Player*> Players;
+    std::list<Player*>& Players; // We must not delete this inside Map, it is just a reference to Game::Players
     Game* game;
 };
 #endif

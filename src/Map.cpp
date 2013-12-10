@@ -6,14 +6,14 @@
 #include <fstream>
 #include <sstream>
 
-Map::Map(Game* _game) : game(_game)
+Map::Map(Game* _game) : game(_game), Players(_game->Players)
 {
-
 }
 
 Map::~Map()
 {
-
+    TileData.clear();
+    Tiles.clear();
 }
 
 void Map::Load()
@@ -110,7 +110,7 @@ void Map::Draw()
 bool Map::HasCollisionAt(sf::Vector2f pos, sf::FloatRect& player, std::list<CollisionInfo>& colliding) const
 {
     sf::FloatRect intersection;
-    sf::FloatRect check(pos.x, pos.y, player.width + 5.f, player.height + 5.f);
+    sf::FloatRect check(pos.x, pos.y, player.width, player.height);
     for (auto itr = Tiles.begin(); itr != Tiles.end(); ++itr)
         if (itr->Collidable && itr->Sprite.getGlobalBounds().intersects(check, intersection))
             colliding.push_back(CollisionInfo(intersection, *itr));
@@ -121,7 +121,5 @@ bool Map::HasCollisionAt(sf::Vector2f pos, sf::FloatRect& player, std::list<Coll
 void Map::AddPlayer(Player* player)
 {
     player->SetPosition(PlayerStartPosition);
-
-    Players.push_back(player);
     player->AddToMap(this);
 }

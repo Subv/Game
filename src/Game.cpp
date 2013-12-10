@@ -1,3 +1,4 @@
+#include <thread>
 #include "Game.h"
 #include "Entity.h"
 #include "Player.h"
@@ -157,29 +158,35 @@ void Game::PrepareWorld()
 {
     State = GAME_STATE_LOADING_LEVEL;
     
-    delete CurrentMap;
-    CurrentMap = new Map(this);
-    CurrentMap->Load();
+    // Create a thread to load the level
+    std::thread loader([&]() {
+        delete CurrentMap;
+        CurrentMap = new Map(this);
+        CurrentMap->Load();
 
-    for (auto itr = Players.begin(); itr != Players.end(); ++itr)
-        delete *itr;
-    Players.clear();
+        for (auto itr = Players.begin(); itr != Players.end(); ++itr)
+            delete *itr;
+        Players.clear();
 
-    for (auto itr = Entities.begin(); itr != Entities.end(); ++itr)
-        delete *itr;
-    Entities.clear();
+        for (auto itr = Entities.begin(); itr != Entities.end(); ++itr)
+            delete *itr;
+        Entities.clear();
 
-    Player* player1 = new Player(this, 0);
-    player1->LoadTexture();
-    CurrentMap->AddPlayer(player1);
+        Player* player1 = new Player(this, 0);
+        player1->LoadTexture();
+        CurrentMap->AddPlayer(player1);
 
-    /*Player* player2 = new Player(this, 1);
-    player2->LoadTexture();
-    CurrentMap->AddPlayer(player2);*/
+        /*Player* player2 = new Player(this, 1);
+        player2->LoadTexture();
+        CurrentMap->AddPlayer(player2);*/
 
-    Players.push_back(player1);
-    //Players.push_back(player2);
-    State = GAME_STATE_PLAYING;
+        Players.push_back(player1);
+        //Players.push_back(player2);
+        State = GAME_STATE_PLAYING;
+    });
+
+    // Start the loader
+    loader.detach();
 }
 
 Player* Game::GetPlayer(int index /*= 0*/)
