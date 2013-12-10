@@ -1,10 +1,11 @@
 #include "Unit.h"
+#include "SharedDefines.h"
 #include "Utils.h"
 
 Unit::Unit(Game* _game) : Entity(_game), jumping(false)
 {
-    HealthPoints = 0;
-
+    HealthPoints = Common::DefaultHealthPoints;
+    
     // Reset the movement
     Velocity.x = 0.0f;
     Velocity.y = 0.0f;
@@ -23,7 +24,7 @@ void Unit::Update(sf::Time const diff)
     // * The Y coordinate increases as we go down the screen, and decreases as we go up, hence the gravity must be positive for the characters to fall
 
     if (IsInAir())
-        Acceleration.y = 40.f; // Gravity acceleration
+        Acceleration.y = Common::GravityAcceleration;
 
     sf::Vector2f& newPos = NewPosition;
 
@@ -31,13 +32,13 @@ void Unit::Update(sf::Time const diff)
     Velocity.x += Acceleration.x * diff.asSeconds();
     Velocity.y += Acceleration.y * diff.asSeconds();
 
-    if (Velocity.x > 160.0f) // Terminal horizontal velocity
-        Velocity.x = 160.0f;
-    else if (Velocity.x < -160.0f) // Terminal horizontal velocity
-        Velocity.x = -160.0f;
+    if (Velocity.x > Common::TerminalHorizontalSpeed) // Terminal horizontal velocity
+        Velocity.x = Common::TerminalHorizontalSpeed;
+    else if (Velocity.x < -Common::TerminalHorizontalSpeed) // Terminal horizontal velocity
+        Velocity.x = -Common::TerminalHorizontalSpeed;
 
-    if (Velocity.y > 160.0f) // Terminal vertical velocity
-        Velocity.y = 160.0f;
+    if (Velocity.y > Common::TerminalVerticalSpeed) // Terminal vertical velocity
+        Velocity.y = Common::TerminalVerticalSpeed;
 
     // Update the position
     if (Utils::CompareFloats(Velocity.x, 0.f) != Utils::COMPARE_EQUAL)
@@ -60,7 +61,7 @@ void Unit::StopMoving(sf::Vector2f alongAxis)
     {
         Velocity.y = 0.f;
         if (IsInAir())
-            Acceleration.y = 40.f;
+            Acceleration.y = Common::GravityAcceleration;
         else
             Acceleration.y = 0.f;
     }
@@ -77,9 +78,9 @@ void Unit::Brake()
     {
         Utils::ComparisonResult result = Utils::CompareFloats(Velocity.x, 0.f);
         if (result == Utils::COMPARE_GREATER_THAN)
-            Acceleration.x = -15.0f;
+            Acceleration.x = -Common::HorizontalBrakeAcceleration;
         else if (result == Utils::COMPARE_LESS_THAN)
-            Acceleration.x = 15.0f;
+            Acceleration.x = Common::HorizontalBrakeAcceleration;
     }
 }
 
@@ -93,6 +94,6 @@ void Unit::Jump()
             Velocity.x *= -1.f;
 
         jumping = true;
-        Velocity.y = -100.f;
+        Velocity.y = -Common::JumpVelocity;
     }
 }

@@ -1,6 +1,21 @@
 #include "Utils.h"
+#include "SharedDefines.h"
 #include <cmath>
 #include <limits>
+
+namespace Common
+{
+    const int DefaultHealthPoints = 100;
+    const float GravityAcceleration = 40.f;
+
+    const float TerminalVerticalSpeed = 160.f;
+    const float TerminalHorizontalSpeed = 160.f;
+
+    const float HorizontalBrakeAcceleration = 15.f;
+    const float HorizontalMoveAcceleration = 15.f;
+
+    const float JumpVelocity = 100.f;
+}
 
 namespace Utils
 {

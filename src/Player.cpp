@@ -19,9 +19,9 @@ void Player::Update(sf::Time const diff)
     {
         // Handle movement for player 1
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-            Acceleration.x = -15.0f;
+            Acceleration.x = -Common::HorizontalMoveAcceleration;
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-            Acceleration.x = 15.0f;
+            Acceleration.x = Common::HorizontalMoveAcceleration;
         else
             Brake();
     }
@@ -29,9 +29,9 @@ void Player::Update(sf::Time const diff)
     {
         // Handle movement for player 2
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-            Acceleration.x = -15.0f;
+            Acceleration.x = -Common::HorizontalMoveAcceleration;
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-            Acceleration.x = 15.0f;
+            Acceleration.x = Common::HorizontalMoveAcceleration;
         else
             Brake();
     }
