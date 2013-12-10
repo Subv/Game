@@ -107,18 +107,15 @@ void Map::Draw()
         game->GetWindow().draw(itr->Sprite);
 }
 
-bool Map::HasCollisionAt(sf::Vector2f pos, sf::FloatRect& player, sf::FloatRect& intersection, TileInfo& tile) const
+bool Map::HasCollisionAt(sf::Vector2f pos, sf::FloatRect& player, std::list<CollisionInfo>& colliding) const
 {
+    sf::FloatRect intersection;
     sf::FloatRect check(pos.x, pos.y, player.width + 5.f, player.height + 5.f);
     for (auto itr = Tiles.begin(); itr != Tiles.end(); ++itr)
-    {
         if (itr->Collidable && itr->Sprite.getGlobalBounds().intersects(check, intersection))
-        {
-            tile = *itr;
-            return true;
-        }
-    }
-    return false;
+            colliding.push_back(CollisionInfo(intersection, *itr));
+
+    return !colliding.empty();
 }
 
 void Map::AddPlayer(Player* player)

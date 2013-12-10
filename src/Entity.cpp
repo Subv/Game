@@ -30,9 +30,14 @@ void Entity::Update(sf::Time const diff)
         return;
 
     // Now we do collision detection and determine if we can actually move there
-    sf::FloatRect intersection;
-    TileInfo tile;
-    bool collides = map->HasCollisionAt(NewPosition, sprite.getGlobalBounds(), intersection, tile);
+    std::list<CollisionInfo> collisions;
+    bool collides = map->HasCollisionAt(NewPosition, sprite.getGlobalBounds(), collisions);
+    for (auto col : collisions)
+    {
+        sf::RectangleShape rect(sf::Vector2f(col.Intersection.width, col.Intersection.height));
+        rect.setPosition(col.Intersection.left, col.Intersection.top);
+        game->GetWindow().draw(rect);
+    }
     if (collides)
     {
         

@@ -19,6 +19,13 @@ struct TileInfo
     sf::Sprite Sprite;
 };
 
+struct CollisionInfo
+{
+    CollisionInfo(sf::FloatRect intersect, TileInfo t) : Intersection(intersect), Tile(t) { }
+    sf::FloatRect Intersection;
+    TileInfo Tile;
+};
+
 class Map
 {
 public:
@@ -30,7 +37,7 @@ public:
     void Update(sf::Time diff);
     void Draw();
 
-    bool HasCollisionAt(sf::Vector2f pos, sf::FloatRect& player, sf::FloatRect& intersection, TileInfo& tile) const;
+    bool HasCollisionAt(sf::Vector2f pos, sf::FloatRect& player, std::list<CollisionInfo>& colliding) const;
 
     void AddPlayer(Player* player);
 
