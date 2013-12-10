@@ -13,7 +13,7 @@ Player::~Player()
 
 }
 
-void Player::Update(sf::Time diff)
+void Player::Update(sf::Time const diff)
 {
     if (PlayerNumber == 0)
     {

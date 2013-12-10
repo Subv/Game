@@ -12,12 +12,13 @@ public:
     Unit(Game* _game);
     virtual ~Unit();
 
-    virtual void Update(sf::Time diff);
+    virtual void Update(sf::Time const diff) override;
 
-    virtual void StopMoving(sf::Vector2f alongAxis);
+    virtual void StopMoving(sf::Vector2f alongAxis) override;
     virtual void Brake();
     virtual void Jump();
     virtual bool IsJumping() { return jumping; }
+
     int HealthPoints;
     bool jumping;
     sf::Vector2f Velocity;

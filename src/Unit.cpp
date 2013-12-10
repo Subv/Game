@@ -17,7 +17,7 @@ Unit::~Unit()
 
 }
 
-void Unit::Update(sf::Time diff)
+void Unit::Update(sf::Time const diff)
 {
     // Stuff to keep in mind:
     // * The Y coordinate increases as we go down the screen, and decreases as we go up, hence the gravity must be positive for the characters to fall
@@ -53,7 +53,7 @@ void Unit::StopMoving(sf::Vector2f alongAxis)
 {
     if (alongAxis.x == 1.f) // Bounce when hitting a wall horizontally
     {
-        Velocity.x = 0.f;
+        Velocity.x *= -1.f;
         //Acceleration.x *= -1.f;
     }
     if (alongAxis.y == 1.f && !IsJumping())

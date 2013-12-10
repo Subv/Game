@@ -13,8 +13,8 @@ public:
     Player(Game* _game, int index);
     ~Player();
 
-    void Update(sf::Time diff);
-    void LoadTexture();
+    void Update(sf::Time const diff) override;
+    void LoadTexture() override;
 
     int PlayerNumber;
 };

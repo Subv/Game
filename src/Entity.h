@@ -15,7 +15,7 @@ public:
     Entity(Game* _game);
     virtual ~Entity();
 
-    virtual void Update(sf::Time diff);
+    virtual void Update(sf::Time const diff);
     virtual void Draw();
 
     virtual void LoadTexture();
