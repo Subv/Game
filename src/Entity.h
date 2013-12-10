@@ -18,12 +18,14 @@ public:
     virtual void Update(sf::Time const diff);
     virtual void Draw();
 
-    virtual void LoadTexture();
+    virtual void LoadTexture() = 0;
 
     virtual TypeId GetTypeId() const { return Type; }
 
     virtual float GetPositionX() const { return Position.x; }
     virtual float GetPositionY() const { return Position.y; }
+
+    virtual void SetPosition(sf::Vector2f pos);
 
     virtual bool IsInAir() const { return inAir; };
 

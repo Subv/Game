@@ -48,8 +48,13 @@ void Map::Load()
 
             sf::Vector2f mapPosition(j * 70.0f, i * 70.0f);
             bool collides = false;
-
             std::string fileName = "none";
+
+            if (TileData[i][j] == "!")
+            {
+                PlayerStartPosition = mapPosition;
+                continue;
+            }
 
             if (TileData[i][j] == "J")
             {
@@ -102,7 +107,7 @@ void Map::Draw()
         game->GetWindow().draw(itr->Sprite);
 }
 
-bool Map::HasCollisionAt(sf::Vector2f pos, sf::FloatRect& player, sf::FloatRect& intersection, TileInfo& tile)
+bool Map::HasCollisionAt(sf::Vector2f pos, sf::FloatRect& player, sf::FloatRect& intersection, TileInfo& tile) const
 {
     sf::FloatRect check(pos.x, pos.y, player.width + 5.f, player.height + 5.f);
     for (auto itr = Tiles.begin(); itr != Tiles.end(); ++itr)
@@ -118,6 +123,8 @@ bool Map::HasCollisionAt(sf::Vector2f pos, sf::FloatRect& player, sf::FloatRect&
 
 void Map::AddPlayer(Player* player)
 {
+    player->SetPosition(PlayerStartPosition);
+
     Players.push_back(player);
     player->AddToMap(this);
 }

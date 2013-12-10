@@ -26,6 +26,7 @@ void Unit::Update(sf::Time const diff)
     if (IsInAir())
         Acceleration.y = Common::GravityAcceleration;
 
+    NewPosition = Position;
     sf::Vector2f& newPos = NewPosition;
 
     // Update the velocity

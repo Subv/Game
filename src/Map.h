@@ -30,9 +30,11 @@ public:
     void Update(sf::Time diff);
     void Draw();
 
-    bool HasCollisionAt(sf::Vector2f pos, sf::FloatRect& player, sf::FloatRect& intersection, TileInfo& tile);
+    bool HasCollisionAt(sf::Vector2f pos, sf::FloatRect& player, sf::FloatRect& intersection, TileInfo& tile) const;
 
     void AddPlayer(Player* player);
+
+    sf::Vector2f PlayerStartPosition;
 private:
     std::vector<std::vector<std::string> > TileData;
     std::vector<TileInfo> Tiles;

@@ -11,14 +11,10 @@
 Entity::Entity(Game* _game) : game(_game), inAir(true)
 {
     Type = TYPEID_ENTITY;
+    NewPosition = Position;
 }
 
 Entity::~Entity()
-{
-
-}
-
-void Entity::LoadTexture()
 {
 
 }
@@ -53,6 +49,13 @@ Unit* Entity::ToUnit()
     if (Type == TYPEID_PLAYER || Type == TYPEID_CREATURE)
         return dynamic_cast<Unit*>(this);
     return nullptr;
+}
+
+void Entity::SetPosition(sf::Vector2f pos)
+{
+    Position = pos;
+    NewPosition = pos;
+    sprite.setPosition(Position);
 }
 
 
