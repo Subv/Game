@@ -66,7 +66,7 @@ void Game::Update(sf::Time const diff)
                 PreviousState = GAME_STATE_NONE;
                 return; // Process on next tick
             case sf::Event::Resized:
-                window.setView(sf::View(sf::FloatRect(0, 0, event.size.width, event.size.height)));
+                window.setView(sf::View(sf::FloatRect(0.f, 0.f, float(event.size.width), float(event.size.height))));
                 break;
             case sf::Event::KeyPressed:
             {
@@ -175,6 +175,7 @@ void Game::DrawTexts()
         fpsText.setColor(sf::Color::Red);
         fpsText.setStyle(sf::Text::Style::Bold);
         fpsText.setPosition(topLeft);
+        fpsText.setCharacterSize(12);
         window.draw(fpsText);
 
         if (State == GAME_STATE_PLAYING)
@@ -183,7 +184,8 @@ void Game::DrawTexts()
             sf::Text posText("X: " + std::to_string(plr->Position.x) + " Y: " + std::to_string(plr->Position.y), font);
             posText.setColor(sf::Color::Red);
             posText.setStyle(sf::Text::Style::Bold);
-            posText.setPosition(topLeft.x, topLeft.y + window.getSize().y - 40.f);
+            posText.setPosition(topLeft.x, topLeft.y + window.getSize().y - 17.f);
+            posText.setCharacterSize(12);
             window.draw(posText);
         }
     }
