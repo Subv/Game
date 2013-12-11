@@ -15,6 +15,7 @@ public:
 
     void Update(sf::Time const diff) override;
     void LoadTexture() override;
+    void LoadMoveTexture(int type);
 
     int PlayerNumber;
 };

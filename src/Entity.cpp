@@ -40,25 +40,21 @@ void Entity::Update(sf::Time const diff)
         rect.setPosition(col.Intersection.left, col.Intersection.top);
         game->GetWindow().draw(rect);
 
-        if (Utils::CompareFloats(col.Intersection.top + col.Intersection.height, col.Tile.Sprite.getGlobalBounds().top) == Utils::COMPARE_GREATER_THAN && Utils::CompareFloats(col.Intersection.top + col.Intersection.height, col.Tile.Sprite.getGlobalBounds().top + col.Tile.Sprite.getGlobalBounds().height) == Utils::COMPARE_LESS_THAN)
+        // Detect vertical collisions
+        if (Utils::CompareFloats(col.Intersection.top + col.Intersection.height, col.Tile.Sprite.getGlobalBounds().top) == Utils::COMPARE_GREATER_THAN && 
+            Utils::CompareFloats(col.Intersection.top + col.Intersection.height, col.Tile.Sprite.getGlobalBounds().top + col.Tile.Sprite.getGlobalBounds().height) == Utils::COMPARE_LESS_THAN && 
+            Utils::CompareFloats(sprite.getGlobalBounds().top + sprite.getGlobalBounds().height, col.Tile.Sprite.getGlobalBounds().top, 10.f) == Utils::COMPARE_EQUAL)
         {
             floor = true; // There's a floor tile below us
+            ToUnit()->jumping = false;
             // Check that we're actually heading towards the tile
             if (ToUnit()->Velocity.y > 0.f)
             {
                 // We touched the top part of the tile, stop falling
-                ToUnit()->jumping = false;
                 ToUnit()->Velocity.y = 0.f;
                 ToUnit()->Acceleration.y = 0.f;
+                NewPosition.y = col.Intersection.top - sprite.getGlobalBounds().height + 1.f; // Don't go too low, correct the position if that happens
                 std::cout << "Top collision" << std::endl;
-            }
-        }
-
-        if (col.Intersection.top < col.Tile.Sprite.getGlobalBounds().top + col.Tile.Sprite.getGlobalBounds().height && col.Intersection.top > col.Tile.Sprite.getGlobalBounds().top + col.Tile.Sprite.getGlobalBounds().height)
-        {
-            if (ToUnit()->Velocity.y < 0.f)
-            {
-                std::cout << "Bottom collision" << std::endl;
             }
         }
     }

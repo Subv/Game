@@ -19,6 +19,7 @@ public:
     virtual void Draw();
 
     virtual void LoadTexture() = 0;
+    virtual void LoadMoveTexture(int type) = 0;
 
     virtual TypeId GetTypeId() const { return Type; }
 
@@ -32,7 +33,7 @@ public:
     virtual void AddToMap(Map* _map) { map = _map; }
 
     virtual void StopMoving(sf::Vector2f alongAxis) = 0;
-
+    
     Unit* ToUnit();
 
     sf::Vector2f NewPosition;

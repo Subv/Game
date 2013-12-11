@@ -53,7 +53,7 @@ void Game::Update(sf::Time const diff)
             case sf::Event::Closed:
                 window.close();
                 return;
-            case sf::Event::KeyReleased:
+            case sf::Event::KeyPressed:
             {
                 switch (event.key.code)
                 {
@@ -115,6 +115,7 @@ void Game::Update(sf::Time const diff)
         sf::View view = GetWindow().getView();
         sf::Vector2f pos = view.getCenter();
         pos.x = GetPlayer()->GetPositionX();
+        pos.y = GetPlayer()->GetPositionY();
         view.setCenter(pos);
         GetWindow().setView(view);
     }
@@ -142,7 +143,7 @@ void Game::DrawTexts()
         fpsText.setStyle(sf::Text::Style::Bold);
         window.draw(fpsText);
 
-        if (!Players.empty())
+        if (State == GAME_STATE_PLAYING)
         {
             Player* plr = GetPlayer(0);
             sf::Text posText("X: " + std::to_string(plr->Position.x) + " Y: " + std::to_string(plr->Position.y), font);
@@ -175,7 +176,6 @@ void Game::PrepareWorld()
         Player* player1 = new Player(this, 0);
         player1->LoadTexture();
         CurrentMap->AddPlayer(player1);
-
         /*Player* player2 = new Player(this, 1);
         player2->LoadTexture();
         CurrentMap->AddPlayer(player2);*/

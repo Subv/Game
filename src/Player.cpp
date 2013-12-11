@@ -19,19 +19,28 @@ void Player::Update(sf::Time const diff)
     {
         // Handle movement for player 1
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-            Acceleration.x = -Common::HorizontalMoveAcceleration;
+        {
+            LoadMoveTexture(2);
+            Velocity.x = -Common::HorizontalMoveSpeed;
+        }
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-            Acceleration.x = Common::HorizontalMoveAcceleration;
+        {
+            LoadMoveTexture(1);
+            Velocity.x = Common::HorizontalMoveSpeed;
+        }
         else
+        {
+            LoadMoveTexture(0);
             Brake();
+        }
     }
     else if (PlayerNumber == 1)
     {
         // Handle movement for player 2
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-            Acceleration.x = -Common::HorizontalMoveAcceleration;
+            Velocity.x = -Common::HorizontalMoveSpeed;
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-            Acceleration.x = Common::HorizontalMoveAcceleration;
+            Velocity.x = Common::HorizontalMoveSpeed;
         else
             Brake();
     }
@@ -43,7 +52,27 @@ void Player::Update(sf::Time const diff)
 
 void Player::LoadTexture()
 {
-    texture = sResourceManager->GetTexture("p1_front.png");
+    texture = sResourceManager->GetTexture("p1/p1_walk08.png");
     sprite.setTexture(texture);
     sprite.setPosition(Position);
+}
+
+void Player::LoadMoveTexture(int type)
+{
+    if (type == 0)
+    {
+        // Load still texture
+        texture = sResourceManager->GetTexture("p1/p1_walk08.png");
+    }
+    else if (type == 1)
+    {
+        // Moving right texture
+        texture = sResourceManager->GetTexture("p1/p1_walk03.png");
+    }
+    else if (type == 2)
+    {
+        // Moving left texture
+        texture = sResourceManager->GetTexture("p1/p1_walk03_left.png");
+    }
+    sprite.setTexture(texture);
 }

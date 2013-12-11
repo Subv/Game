@@ -70,19 +70,8 @@ void Unit::StopMoving(sf::Vector2f alongAxis)
 
 void Unit::Brake()
 {
-    if (Utils::CompareFloats(Velocity.x, 0.f, 0.5f) == Utils::COMPARE_EQUAL)
-    {
-        Acceleration.x = 0.f;
-        Velocity.x = 0.f;
-    }
-    else
-    {
-        Utils::ComparisonResult result = Utils::CompareFloats(Velocity.x, 0.f);
-        if (result == Utils::COMPARE_GREATER_THAN)
-            Acceleration.x = -Common::HorizontalBrakeAcceleration;
-        else if (result == Utils::COMPARE_LESS_THAN)
-            Acceleration.x = Common::HorizontalBrakeAcceleration;
-    }
+    Velocity.x = 0.f;
+    Acceleration.x = 0.f;
 }
 
 void Unit::Jump()

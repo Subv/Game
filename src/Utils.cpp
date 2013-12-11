@@ -6,15 +6,15 @@
 namespace Common
 {
     const int DefaultHealthPoints = 100;
-    const float GravityAcceleration = 40.f;
+    const float GravityAcceleration = 500.f;
 
-    const float TerminalVerticalSpeed = 160.f;
-    const float TerminalHorizontalSpeed = 160.f;
+    const float TerminalVerticalSpeed = 1060.f;
+    const float TerminalHorizontalSpeed = 3000.f;
 
     const float HorizontalBrakeAcceleration = 15.f;
-    const float HorizontalMoveAcceleration = 15.f;
+    const float HorizontalMoveSpeed = 300.f;
 
-    const float JumpVelocity = 100.f;
+    const float JumpVelocity = 400.f;
 }
 
 namespace Utils

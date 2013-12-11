@@ -17,8 +17,7 @@ namespace Common
     extern const float TerminalVerticalSpeed;
     extern const float TerminalHorizontalSpeed;
 
-    extern const float HorizontalBrakeAcceleration;
-    extern const float HorizontalMoveAcceleration;
+    extern const float HorizontalMoveSpeed;
 
     extern const float JumpVelocity;
 }
