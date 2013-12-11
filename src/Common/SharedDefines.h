@@ -7,7 +7,8 @@ enum TypeId
     TYPEID_UNIT,
     TYPEID_PLAYER,
     TYPEID_CREATURE,
-    TYPEID_OBJECT
+    TYPEID_OBJECT,
+    TYPEID_TILE
 };
 
 namespace Common

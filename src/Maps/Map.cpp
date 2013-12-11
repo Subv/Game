@@ -48,8 +48,7 @@ void Map::Load()
                 continue;
 
             sf::Vector2f mapPosition(j * 70.0f, i * 70.0f);
-            bool collides = false;
-            std::string fileName = "none";
+            Tile* tile = nullptr;
 
             if (TileData[i][j] == "!")
             {
@@ -58,39 +57,29 @@ void Map::Load()
             }
 
             if (TileData[i][j] == "J")
-            {
-                collides = true;
-                fileName = "brickWall.png";
-            }
+                tile = new Tile(game, j, i, true, "brickWall.png");
             else if (TileData[i][j] == "K")
-            {
-                collides = true;
-                fileName = "grass.png";
-            }
+                tile = new Tile(game, j, i, true, "grass.png");
             else if (TileData[i][j] == "L")
-                fileName = "grassCenter.png";
+                tile = new Tile(game, j, i, false, "grassCenter.png");
             else if (TileData[i][j] == "M")
-            {
-                collides = true;
-                fileName = "bridgeLogs.png";
-            }
+                tile = new Tile(game, j, i, false, "bridgeLogs.png");
             else if (TileData[i][j] == "N")
-                fileName = "hill_large.png";
+                tile = new Tile(game, j, i, false, "hill_large.png");
             else if (TileData[i][j] == "O")
-                fileName = "hill_small.png";
+                tile = new Tile(game, j, i, false, "hill_small.png");
             else if (TileData[i][j] == "P")
-                fileName = "fence.png";
+                tile = new Tile(game, j, i, false, "fence.png");
             else if (TileData[i][j] == "Q")
-                fileName = "fenceBroken.png";
+                tile = new Tile(game, j, i, false, "fenceBroken.png");
             else if (TileData[i][j] == "T")
-                fileName = "bush.png";
+                tile = new Tile(game, j, i, false, "bush.png");
 
-            if (fileName != "none")
+            if (tile)
             {
-                sf::Sprite* block = new sf::Sprite(sResourceManager->GetTile(fileName));
-                block->setPosition(mapPosition);
-                
-                Tile* tile = new Tile(this, j, i, block, collides);
+                tile->AddToMap(this);
+                tile->LoadTexture();
+                tile->SetPosition(mapPosition);
                 Tiles.push_back(tile);
             }
         }
@@ -107,7 +96,7 @@ void Map::Update(sf::Time diff)
 void Map::Draw()
 {
     for (auto itr = Tiles.begin(); itr != Tiles.end(); ++itr)
-        (*itr)->Draw(game->GetWindow());
+        (*itr)->Draw();
 }
 
 bool Map::HasCollisionAt(sf::Vector2f pos, sf::FloatRect& player, std::list<CollisionInfo>& colliding) const

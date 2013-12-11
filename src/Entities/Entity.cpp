@@ -14,6 +14,12 @@ Entity::Entity(Game* _game, std::string model) : game(_game), inAir(true), Textu
 {
     Type = TYPEID_ENTITY;
     NewPosition = Position;
+
+    // Reset the movement
+    Velocity.x = 0.0f;
+    Velocity.y = 0.0f;
+    Acceleration.x = 0.0f;
+    Acceleration.y = 0.0f;
 }
 
 Entity::~Entity()
@@ -59,13 +65,16 @@ void Entity::Update(sf::Time const diff)
             Utils::CompareFloats(sprite.getGlobalBounds().top + sprite.getGlobalBounds().height, collision.Block->GetPositionY(), 10.f) == Utils::COMPARE_EQUAL)
         {
             floor = true; // There's a floor tile below us
-            ToUnit()->jumping = false;
+
+            if (Unit* unit = ToUnit()) // Stop jumping if we're an unit
+                unit->jumping = false;
+
             // Check that we're actually heading towards the tile
-            if (ToUnit()->Velocity.y > 0.f)
+            if (Velocity.y > 0.f)
             {
                 // We touched the top part of the tile, stop falling
-                ToUnit()->Velocity.y = 0.f;
-                ToUnit()->Acceleration.y = 0.f;
+                Velocity.y = 0.f;
+                Acceleration.y = 0.f;
                 NewPosition.y = collision.Intersection.top - sprite.getGlobalBounds().height + 1.f; // Don't go too low, correct the position if that happens
                 std::cout << "Top collision" << std::endl;
             }
@@ -81,8 +90,8 @@ void Entity::Update(sf::Time const diff)
                 Utils::CompareFloats(collision.Intersection.left + collision.Intersection.width, collision.Block->GetPositionX(), 10.f) == Utils::COMPARE_EQUAL) // If we already trespassed the tile, don't bother with collision handling, for example if the player jumped from below
             {
                 // We are colliding horizontally with the left side of a tile
-                ToUnit()->Velocity.x = 0.f;
-                ToUnit()->Acceleration.x = 0.f;
+                Velocity.x = 0.f;
+                Acceleration.x = 0.f;
                 NewPosition.x = collision.Block->GetPositionX() - sprite.getGlobalBounds().width; // Move back a bit
                 std::cout << "Left collision" << std::endl;
             }
@@ -90,8 +99,8 @@ void Entity::Update(sf::Time const diff)
                 Utils::CompareFloats(collision.Intersection.left, collision.Block->GetPositionX() + collision.Block->GetWidth(), 10.f) == Utils::COMPARE_EQUAL)
             {
                 // We are colliding horizontally with the right side of a tile
-                ToUnit()->Velocity.x = 0.f;
-                ToUnit()->Acceleration.x = 0.f;
+                Velocity.x = 0.f;
+                Acceleration.x = 0.f;
                 NewPosition.x = collision.Block->GetPositionX() + collision.Block->GetWidth(); // Move back a bit
                 std::cout << "Right collision" << std::endl;
             }
@@ -124,7 +133,17 @@ void Entity::SetPosition(sf::Vector2f pos)
 
 void Entity::LoadTexture()
 {
-    texture = sResourceManager->GetTexture(TextureName);
+    if (Type != TYPEID_TILE)
+        texture = sResourceManager->GetTexture(TextureName);
+    else
+        texture = sResourceManager->GetTile(TextureName);
+
     sprite.setTexture(texture);
     sprite.setPosition(Position);
+}
+
+void Entity::Brake()
+{
+    Velocity.x = 0.f;
+    Acceleration.x = 0.f;
 }

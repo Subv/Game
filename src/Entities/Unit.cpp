@@ -7,12 +7,6 @@ Unit::Unit(Game* _game, std::string model) : Entity(_game, model), jumping(false
 {
     Type = TYPEID_UNIT;
     HealthPoints = Common::DefaultHealthPoints;
-
-    // Reset the movement
-    Velocity.x = 0.0f;
-    Velocity.y = 0.0f;
-    Acceleration.x = 0.0f;
-    Acceleration.y = 0.0f;
 }
 
 Unit::~Unit()
@@ -51,29 +45,6 @@ void Unit::Update(sf::Time const diff)
         newPos.y += Velocity.y * diff.asSeconds();
 
     Entity::Update(diff);
-}
-
-void Unit::StopMoving(sf::Vector2f alongAxis)
-{
-    if (alongAxis.x == 1.f) // Bounce when hitting a wall horizontally
-    {
-        Velocity.x *= -1.f;
-        //Acceleration.x *= -1.f;
-    }
-    if (alongAxis.y == 1.f && !IsJumping())
-    {
-        Velocity.y = 0.f;
-        if (IsInAir())
-            Acceleration.y = Common::GravityAcceleration;
-        else
-            Acceleration.y = 0.f;
-    }
-}
-
-void Unit::Brake()
-{
-    Velocity.x = 0.f;
-    Acceleration.x = 0.f;
 }
 
 void Unit::Jump()

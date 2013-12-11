@@ -16,14 +16,10 @@ public:
 
     virtual void LoadMoveTexture(int type) override { }
 
-    virtual void StopMoving(sf::Vector2f alongAxis) override;
-    virtual void Brake();
     virtual void Jump();
     virtual bool IsJumping() const { return jumping; }
 
     int HealthPoints;
     bool jumping;
-    sf::Vector2f Velocity;
-    sf::Vector2f Acceleration;
 };
 #endif

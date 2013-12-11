@@ -2,7 +2,7 @@
 #include "Tile.h"
 #include "SpecialTile.h"
 
-SpecialTile::SpecialTile(Map* _map, int x, int y, sf::Sprite* sprite) : Tile(_map, x, y, sprite, true)
+SpecialTile::SpecialTile(Game* _game, int x, int y) : Tile(_game, x, y, true, "")
 {
 
 }
@@ -10,5 +10,10 @@ SpecialTile::SpecialTile(Map* _map, int x, int y, sf::Sprite* sprite) : Tile(_ma
 SpecialTile::~SpecialTile()
 {
 
+}
+
+void SpecialTile::Update(sf::Time const diff)
+{
+    Entity::Update(diff);
 }
 

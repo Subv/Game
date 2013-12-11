@@ -19,12 +19,14 @@ public:
     virtual void Draw();
 
     virtual void LoadTexture();
-    virtual void LoadMoveTexture(int type) = 0;
+    virtual void LoadMoveTexture(int type) { };
 
     virtual TypeId GetTypeId() const { return Type; }
 
     virtual float GetPositionX() const { return Position.x; }
     virtual float GetPositionY() const { return Position.y; }
+    virtual float GetWidth() const { return sprite.getGlobalBounds().width; }
+    virtual float GetHeight() const { return sprite.getGlobalBounds().height; }
 
     virtual void SetPosition(sf::Vector2f pos);
 
@@ -32,7 +34,7 @@ public:
 
     virtual void AddToMap(Map* _map) { map = _map; }
 
-    virtual void StopMoving(sf::Vector2f alongAxis) = 0;
+    virtual void Brake();
     
     Unit* ToUnit();
 
@@ -47,5 +49,8 @@ protected:
     Game* game;
     sf::Texture texture;
     sf::Sprite sprite;
+
+    sf::Vector2f Velocity;
+    sf::Vector2f Acceleration;
 };
 #endif
