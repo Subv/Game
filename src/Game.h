@@ -40,6 +40,7 @@ public:
 
     sf::RenderWindow& GetWindow() { return window; }
     void PrepareWorld();
+    bool DebugEnabled() const { return debugMode; }
 
     Player* GetPlayer(int index = 0);
 private:
