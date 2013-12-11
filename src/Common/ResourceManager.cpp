@@ -2,7 +2,7 @@
 
 ResourceManager* ResourceManager::_instance = nullptr;
 
-ResourceManager::ResourceManager() : ResourcesDir("C:/Users/Sebastian/Documents/Game/Code/Resources/")
+ResourceManager::ResourceManager() : ResourcesDir("Resources/")
 {
 
 }

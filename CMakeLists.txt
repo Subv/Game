@@ -15,9 +15,7 @@ set(CMAKE_INSTALL_RPATH_USE_LINK_PATH 1)
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/macros")
 
 # build in Release-mode by default if not explicitly set
-if( NOT CMAKE_BUILD_TYPE )
-  set(CMAKE_BUILD_TYPE DEBUG)
-endif()
+set(CMAKE_BUILD_TYPE "Debug")
 
 # set up output paths for executable binaries (.exe-files, and .dll-files on DLL-capable platforms)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)

@@ -26,3 +26,13 @@ target_link_libraries(Game
 	sfml-window
 	sfml-system
 )
+
+IF (UNIX)
+	add_custom_command(TARGET Game POST_BUILD
+					   COMMAND ${CMAKE_COMMAND} -E copy_directory
+						   ${CMAKE_SOURCE_DIR}/Resources ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/Resources)
+ELSEIF(WIN32)
+	add_custom_command(TARGET Game POST_BUILD
+                   COMMAND ${CMAKE_COMMAND} -E copy_directory
+                       ${CMAKE_SOURCE_DIR}/Resources ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CMAKE_BUILD_TYPE}/Resources)
+ENDIF()
