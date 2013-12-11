@@ -16,7 +16,7 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/macros")
 
 # build in Release-mode by default if not explicitly set
 if( NOT CMAKE_BUILD_TYPE )
-  set(CMAKE_BUILD_TYPE "Release")
+  set(CMAKE_BUILD_TYPE DEBUG)
 endif()
 
 # set up output paths for executable binaries (.exe-files, and .dll-files on DLL-capable platforms)
@@ -30,3 +30,8 @@ add_subdirectory(dep)
 
 # add core sources
 add_subdirectory(src)
+
+IF (UNIX)
+	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0 -ggdb")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -ggdb -std=c++11")
+ENDIF()
