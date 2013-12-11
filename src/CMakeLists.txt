@@ -22,7 +22,6 @@ add_executable(Game
 )
 
 target_link_libraries(Game
-	sfml-main
 	sfml-graphics
 	sfml-window
 	sfml-system
