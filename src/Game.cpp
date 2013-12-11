@@ -69,6 +69,18 @@ void Game::Update(sf::Time const diff)
             {
                 switch (event.key.code)
                 {
+                    case sf::Keyboard::P:
+                        if (State == GAME_STATE_PAUSED)
+                        {
+                            State = PreviousState;
+                            PreviousState = GAME_STATE_NONE;
+                        }
+                        else
+                        {
+                            PreviousState = State;
+                            State = GAME_STATE_PAUSED;
+                        }
+                        break;
                     case sf::Keyboard::T:
                         debugMode ^= true; // Toggle debug draws
                         break;
