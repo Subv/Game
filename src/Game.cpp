@@ -65,6 +65,9 @@ void Game::Update(sf::Time const diff)
                 State = PreviousState;
                 PreviousState = GAME_STATE_NONE;
                 return; // Process on next tick
+            case sf::Event::Resized:
+                window.setView(sf::View(sf::FloatRect(0, 0, event.size.width, event.size.height)));
+                break;
             case sf::Event::KeyPressed:
             {
                 switch (event.key.code)
