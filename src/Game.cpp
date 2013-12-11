@@ -9,7 +9,7 @@
 
 Game* Game::_instance = nullptr;
 
-Game::Game() : window(sf::VideoMode(1000, 600), "Game"), CurrentMap(nullptr), MenuMap(nullptr), fps(0), debugMode(false), State(GAME_STATE_NONE)
+Game::Game() : window(sf::VideoMode(1000, 600), "Game"), CurrentMap(nullptr), MenuMap(nullptr), fps(0), debugMode(false), State(GAME_STATE_NONE), PreviousState(GAME_STATE_NONE)
 {
     window.setFramerateLimit(60);
 }
@@ -39,7 +39,10 @@ void Game::Start()
         if (State == GAME_STATE_NONE)
             State = GAME_STATE_MENU;
 
-        Update(timer.restart());
+        sf::Time diff = timer.restart();
+        if (State == GAME_STATE_PAUSED)
+            diff = sf::Time(); // Do not count ticks if the game is paused
+        Update(diff);
     }
 }
 
@@ -54,6 +57,14 @@ void Game::Update(sf::Time const diff)
             case sf::Event::Closed:
                 window.close();
                 return;
+            case sf::Event::LostFocus:
+                PreviousState = State;
+                State = GAME_STATE_PAUSED;
+                break;
+            case sf::Event::GainedFocus:
+                State = PreviousState;
+                PreviousState = GAME_STATE_NONE;
+                return; // Process on next tick
             case sf::Event::KeyPressed:
             {
                 switch (event.key.code)
@@ -87,6 +98,9 @@ void Game::Update(sf::Time const diff)
             }
         }
     }
+
+    if (State == GAME_STATE_PAUSED)
+        return;
 
     window.clear();
 

@@ -52,6 +52,7 @@ private:
     std::list<Player*> Players;
     
     GameState State;
+    GameState PreviousState;
     
     Map* CurrentMap;
     Menu* MenuMap;
