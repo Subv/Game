@@ -32,6 +32,7 @@ add_subdirectory(dep)
 add_subdirectory(src)
 
 IF (UNIX)
+	message("Enabling C++11 for GCC")
 	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0 -ggdb")
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -ggdb -std=c++11")
+	list( APPEND CMAKE_CXX_FLAGS "-std=c++0x ${CMAKE_CXX_FLAGS} -g -ftest-coverage -fprofile-arcs")
 ENDIF()
