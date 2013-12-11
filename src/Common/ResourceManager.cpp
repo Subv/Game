@@ -12,8 +12,10 @@ ResourceManager::~ResourceManager()
 
 }
 
-sf::Font& ResourceManager::GetFont(std::string name)
+sf::Font& ResourceManager::GetFont(std::string _name)
 {
+    std::string name;
+    std::transform(_name.begin(), _name.end(), std::back_inserter(name), ::toupper);
     auto itr = Fonts.find(name);
     if (itr != Fonts.end())
         return *itr->second;
