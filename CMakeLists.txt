@@ -25,14 +25,14 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 # Set build-directive (used in core to tell which buildtype we used)
 add_definitions(-D_BUILD_DIRECTIVE=\\"${CMAKE_BUILD_TYPE}\\")
 
-# add dependencies
-add_subdirectory(dep)
-
-# add core sources
-add_subdirectory(src)
-
 IF (UNIX)
 	message("Enabling C++11 for GCC")
 	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0 -ggdb")
 	list( APPEND CMAKE_CXX_FLAGS "-std=c++0x ${CMAKE_CXX_FLAGS} -g -ftest-coverage -fprofile-arcs")
 ENDIF()
+
+# add dependencies
+add_subdirectory(dep)
+
+# add core sources
+add_subdirectory(src)
