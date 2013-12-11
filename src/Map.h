@@ -8,6 +8,7 @@
 
 class Game;
 class Player;
+class Entity;
 
 struct TileInfo
 {
@@ -40,12 +41,14 @@ public:
     bool HasCollisionAt(sf::Vector2f pos, sf::FloatRect& player, std::list<CollisionInfo>& colliding) const;
 
     void AddPlayer(Player* player);
+    void AddEntity(Entity* entity, sf::Vector2f& position);
 
     sf::Vector2f PlayerStartPosition;
 private:
     std::vector<std::vector<std::string> > TileData;
     std::vector<TileInfo> Tiles;
     std::list<Player*>& Players; // We must not delete this inside Map, it is just a reference to Game::Players
+    std::list<Entity*>& Entities;
     Game* game;
 };
 #endif

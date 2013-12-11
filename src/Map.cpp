@@ -6,7 +6,7 @@
 #include <fstream>
 #include <sstream>
 
-Map::Map(Game* _game) : game(_game), Players(_game->Players)
+Map::Map(Game* _game) : game(_game), Players(_game->Players), Entities(_game->Entities)
 {
 }
 
@@ -122,4 +122,10 @@ void Map::AddPlayer(Player* player)
 {
     player->SetPosition(PlayerStartPosition);
     player->AddToMap(this);
+}
+
+void Map::AddEntity(Entity* entity, sf::Vector2f& position)
+{
+    entity->SetPosition(position);
+    entity->AddToMap(this);
 }

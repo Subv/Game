@@ -8,7 +8,7 @@
 #include "SharedDefines.h"
 #include <SFML/Graphics.hpp>
 
-Entity::Entity(Game* _game) : game(_game), inAir(true)
+Entity::Entity(Game* _game, std::string model) : game(_game), inAir(true), TextureName(model)
 {
     Type = TYPEID_ENTITY;
     NewPosition = Position;
@@ -108,7 +108,7 @@ void Entity::Update(sf::Time const diff)
 
 Unit* Entity::ToUnit()
 {
-    if (Type == TYPEID_PLAYER || Type == TYPEID_CREATURE)
+    if (Type == TYPEID_PLAYER || Type == TYPEID_CREATURE || Type == TYPEID_UNIT)
         return dynamic_cast<Unit*>(this);
     return nullptr;
 }
@@ -120,4 +120,9 @@ void Entity::SetPosition(sf::Vector2f pos)
     sprite.setPosition(Position);
 }
 
-
+void Entity::LoadTexture()
+{
+    texture = sResourceManager->GetTexture(TextureName);
+    sprite.setTexture(texture);
+    sprite.setPosition(Position);
+}

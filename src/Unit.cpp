@@ -1,11 +1,13 @@
 #include "Unit.h"
 #include "SharedDefines.h"
+#include "ResourceManager.h"
 #include "Utils.h"
 
-Unit::Unit(Game* _game) : Entity(_game), jumping(false)
+Unit::Unit(Game* _game, std::string model) : Entity(_game, model), jumping(false)
 {
+    Type = TYPEID_UNIT;
     HealthPoints = Common::DefaultHealthPoints;
-    
+
     // Reset the movement
     Velocity.x = 0.0f;
     Velocity.y = 0.0f;

@@ -12,13 +12,13 @@ class Unit;
 class Entity
 {
 public:
-    Entity(Game* _game);
+    Entity(Game* _game, std::string model);
     virtual ~Entity();
 
     virtual void Update(sf::Time const diff);
     virtual void Draw();
 
-    virtual void LoadTexture() = 0;
+    virtual void LoadTexture();
     virtual void LoadMoveTexture(int type) = 0;
 
     virtual TypeId GetTypeId() const { return Type; }
@@ -38,6 +38,8 @@ public:
 
     sf::Vector2f NewPosition;
     sf::Vector2f Position;
+    
+    std::string TextureName; // Original texture name
 protected:
     bool inAir;
     Map* map;

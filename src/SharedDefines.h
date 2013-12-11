@@ -3,10 +3,11 @@
 
 enum TypeId
 {
+    TYPEID_ENTITY,
+    TYPEID_UNIT,
     TYPEID_PLAYER,
     TYPEID_CREATURE,
-    TYPEID_OBJECT,
-    TYPEID_ENTITY
+    TYPEID_OBJECT
 };
 
 namespace Common

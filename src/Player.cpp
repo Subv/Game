@@ -3,7 +3,7 @@
 #include "ResourceManager.h"
 #include "SharedDefines.h"
 
-Player::Player(Game* _game, int index) : Unit(_game), PlayerNumber(index)
+Player::Player(Game* _game, int index, std::string texture) : Unit(_game, texture), PlayerNumber(index)
 {
     Type = TYPEID_PLAYER;
 }
@@ -50,19 +50,12 @@ void Player::Update(sf::Time const diff)
     Unit::Update(diff);
 }
 
-void Player::LoadTexture()
-{
-    texture = sResourceManager->GetTexture("p1/p1_walk08.png");
-    sprite.setTexture(texture);
-    sprite.setPosition(Position);
-}
-
 void Player::LoadMoveTexture(int type)
 {
     if (type == 0)
     {
         // Load still texture
-        texture = sResourceManager->GetTexture("p1/p1_walk08.png");
+        texture = sResourceManager->GetTexture(TextureName);
     }
     else if (type == 1)
     {

@@ -10,11 +10,10 @@ class Game;
 class Player : public Unit
 {
 public:
-    Player(Game* _game, int index);
+    Player(Game* _game, int index, std::string texture);
     ~Player();
 
     void Update(sf::Time const diff) override;
-    void LoadTexture() override;
     void LoadMoveTexture(int type);
 
     int PlayerNumber;

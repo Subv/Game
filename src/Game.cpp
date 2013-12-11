@@ -1,6 +1,7 @@
 #include <thread>
 #include "Game.h"
 #include "Entity.h"
+#include "Unit.h"
 #include "Player.h"
 #include "Map.h"
 #include "Menu.h"
@@ -173,12 +174,19 @@ void Game::PrepareWorld()
             delete *itr;
         Entities.clear();
 
-        Player* player1 = new Player(this, 0);
+        Player* player1 = new Player(this, 0, "p1/p1_walk08.png");
         player1->LoadTexture();
         CurrentMap->AddPlayer(player1);
         /*Player* player2 = new Player(this, 1);
         player2->LoadTexture();
         CurrentMap->AddPlayer(player2);*/
+
+
+        // Test entity
+        Unit* tst = new Unit(this, "coinGold.png");
+        tst->LoadTexture();
+        CurrentMap->AddEntity(tst, sf::Vector2f(7 * 70.f, 3 * 70.f));
+        Entities.push_back(tst);
 
         Players.push_back(player1);
         //Players.push_back(player2);

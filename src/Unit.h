@@ -9,10 +9,12 @@ class Game;
 class Unit : public Entity
 {
 public:
-    Unit(Game* _game);
+    Unit(Game* _game, std::string model);
     virtual ~Unit();
 
     virtual void Update(sf::Time const diff) override;
+
+    virtual void LoadMoveTexture(int type) override { }
 
     virtual void StopMoving(sf::Vector2f alongAxis) override;
     virtual void Brake();
