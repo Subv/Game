@@ -139,7 +139,6 @@ void Game::Update(sf::Time const diff)
 
     DrawTexts();
     window.display();
-
     if (State == GAME_STATE_PLAYING)
     {
         sf::View view = GetWindow().getView();
@@ -154,6 +153,10 @@ void Game::Update(sf::Time const diff)
 void Game::DrawTexts()
 {
     sf::Font& font = sResourceManager->GetFont("arial.ttf");
+
+    sf::Vector2f topLeft;
+    topLeft.x = window.getView().getCenter().x - window.getSize().x / 2.f;
+    topLeft.y = window.getView().getCenter().y - window.getSize().y / 2.f;
 
     if (State == GAME_STATE_LOADING_LEVEL)
     {
@@ -171,6 +174,7 @@ void Game::DrawTexts()
         sf::Text fpsText(std::to_string(fps) + " FPS", font);
         fpsText.setColor(sf::Color::Red);
         fpsText.setStyle(sf::Text::Style::Bold);
+        fpsText.setPosition(topLeft);
         window.draw(fpsText);
 
         if (State == GAME_STATE_PLAYING)
@@ -179,7 +183,7 @@ void Game::DrawTexts()
             sf::Text posText("X: " + std::to_string(plr->Position.x) + " Y: " + std::to_string(plr->Position.y), font);
             posText.setColor(sf::Color::Red);
             posText.setStyle(sf::Text::Style::Bold);
-            posText.setPosition(0, 570.0f);
+            posText.setPosition(topLeft.x, topLeft.y + window.getSize().y - 40.f);
             window.draw(posText);
         }
     }
