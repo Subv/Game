@@ -99,7 +99,7 @@ void Map::Draw()
         (*itr)->Draw();
 }
 
-bool Map::HasCollisionAt(sf::Vector2f pos, sf::FloatRect& player, std::list<CollisionInfo>& colliding) const
+bool Map::HasCollisionAt(sf::Vector2f pos, sf::FloatRect player, std::list<CollisionInfo>& colliding) const
 {
     sf::FloatRect intersection;
     sf::FloatRect check(pos.x, pos.y, player.width, player.height);

@@ -3,6 +3,7 @@
 
 #include <SFML/System/Time.hpp>
 #include <list>
+#include <string>
 
 class Game;
 

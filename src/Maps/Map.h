@@ -30,7 +30,7 @@ public:
     void Update(sf::Time diff);
     void Draw();
 
-    bool HasCollisionAt(sf::Vector2f pos, sf::FloatRect& player, std::list<CollisionInfo>& colliding) const;
+    bool HasCollisionAt(sf::Vector2f pos, sf::FloatRect player, std::list<CollisionInfo>& colliding) const;
 
     void AddPlayer(Player* player);
     void AddEntity(Entity* entity);
