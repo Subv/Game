@@ -6,25 +6,17 @@
 #include <vector>
 #include <list>
 
+class Tile;
 class Game;
 class Player;
 class Entity;
-
-struct TileInfo
-{
-    TileInfo() {}
-    TileInfo(int x, int y, sf::Sprite sprite, bool collidable) : X(x), Y(y), Sprite(sprite), Collidable(collidable) { }
-
-    int X, Y;
-    bool Collidable;
-    sf::Sprite Sprite;
-};
+class SpecialTile;
 
 struct CollisionInfo
 {
-    CollisionInfo(sf::FloatRect intersect, TileInfo t) : Intersection(intersect), Tile(t) { }
+    CollisionInfo(sf::FloatRect intersect, Tile* t) : Intersection(intersect), Block(t) { }
     sf::FloatRect Intersection;
-    TileInfo Tile;
+    Tile* Block;
 };
 
 class Map
@@ -41,12 +33,12 @@ public:
     bool HasCollisionAt(sf::Vector2f pos, sf::FloatRect& player, std::list<CollisionInfo>& colliding) const;
 
     void AddPlayer(Player* player);
-    void AddEntity(Entity* entity, sf::Vector2f& position);
+    void AddEntity(Entity* entity);
 
     sf::Vector2f PlayerStartPosition;
 private:
     std::vector<std::vector<std::string> > TileData;
-    std::vector<TileInfo> Tiles;
+    std::vector<Tile*> Tiles;
     std::list<Player*>& Players; // We must not delete this inside Map, it is just a reference to Game::Players
     std::list<Entity*>& Entities;
     Game* game;

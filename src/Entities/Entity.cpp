@@ -1,12 +1,14 @@
+#include <iostream>
+#include <SFML/Graphics.hpp>
+
 #include "Entity.h"
 #include "Game.h"
 #include "ResourceManager.h"
 #include "Unit.h"
-#include <iostream>
 #include "Utils.h"
 #include "Map.h"
+#include "Tile.h"
 #include "SharedDefines.h"
-#include <SFML/Graphics.hpp>
 
 Entity::Entity(Game* _game, std::string model) : game(_game), inAir(true), TextureName(model)
 {
@@ -43,8 +45,8 @@ void Entity::Update(sf::Time const diff)
             rect.setPosition(collision.Intersection.left, collision.Intersection.top);
             game->GetWindow().draw(rect);
 
-            sf::RectangleShape rect2(sf::Vector2f(collision.Tile.Sprite.getGlobalBounds().width, collision.Tile.Sprite.getGlobalBounds().height));
-            rect2.setPosition(collision.Tile.Sprite.getGlobalBounds().left, collision.Tile.Sprite.getGlobalBounds().top);
+            sf::RectangleShape rect2(sf::Vector2f(collision.Block->GetWidth(), collision.Block->GetHeight()));
+            rect2.setPosition(collision.Block->GetPositionX(), collision.Block->GetPositionY());
             rect2.setOutlineColor(sf::Color::Blue);
             rect2.setFillColor(sf::Color::Transparent);
             rect2.setOutlineThickness(3.f);
@@ -52,9 +54,9 @@ void Entity::Update(sf::Time const diff)
         }
 
         // Detect vertical collisions
-        if (Utils::CompareFloats(collision.Intersection.top + collision.Intersection.height, collision.Tile.Sprite.getGlobalBounds().top) == Utils::COMPARE_GREATER_THAN &&
-            Utils::CompareFloats(collision.Intersection.top + collision.Intersection.height, collision.Tile.Sprite.getGlobalBounds().top + collision.Tile.Sprite.getGlobalBounds().height) == Utils::COMPARE_LESS_THAN &&
-            Utils::CompareFloats(sprite.getGlobalBounds().top + sprite.getGlobalBounds().height, collision.Tile.Sprite.getGlobalBounds().top, 10.f) == Utils::COMPARE_EQUAL)
+        if (Utils::CompareFloats(collision.Intersection.top + collision.Intersection.height, collision.Block->GetPositionY()) == Utils::COMPARE_GREATER_THAN &&
+            Utils::CompareFloats(collision.Intersection.top + collision.Intersection.height, collision.Block->GetPositionY() + collision.Block->GetHeight()) == Utils::COMPARE_LESS_THAN &&
+            Utils::CompareFloats(sprite.getGlobalBounds().top + sprite.getGlobalBounds().height, collision.Block->GetPositionY(), 10.f) == Utils::COMPARE_EQUAL)
         {
             floor = true; // There's a floor tile below us
             ToUnit()->jumping = false;
@@ -69,28 +71,28 @@ void Entity::Update(sf::Time const diff)
             }
         }
         // Detect horizontal collisions
-        else if (Utils::CompareFloats(collision.Intersection.top, collision.Tile.Sprite.getGlobalBounds().top + collision.Tile.Sprite.getGlobalBounds().height / 2.f) == Utils::COMPARE_LESS_THAN && // If the player is at least halfway below the tile, don't collide
-            ((Utils::CompareFloats(collision.Intersection.left + collision.Intersection.width, collision.Tile.Sprite.getGlobalBounds().left) == Utils::COMPARE_GREATER_THAN &&
-            Utils::CompareFloats(collision.Intersection.left + collision.Intersection.width, collision.Tile.Sprite.getGlobalBounds().left + collision.Tile.Sprite.getGlobalBounds().width) == Utils::COMPARE_LESS_THAN) ||
-            (Utils::CompareFloats(collision.Intersection.left, collision.Tile.Sprite.getGlobalBounds().left + collision.Tile.Sprite.getGlobalBounds().width) == Utils::COMPARE_LESS_THAN &&
-            Utils::CompareFloats(collision.Intersection.left, collision.Tile.Sprite.getGlobalBounds().left) == Utils::COMPARE_GREATER_THAN)))
+        else if (Utils::CompareFloats(collision.Intersection.top, collision.Block->GetPositionY() + collision.Block->GetHeight() / 2.f) == Utils::COMPARE_LESS_THAN && // If the player is at least halfway below the tile, don't collide
+            ((Utils::CompareFloats(collision.Intersection.left + collision.Intersection.width, collision.Block->GetPositionX()) == Utils::COMPARE_GREATER_THAN &&
+            Utils::CompareFloats(collision.Intersection.left + collision.Intersection.width, collision.Block->GetPositionX() + collision.Block->GetWidth()) == Utils::COMPARE_LESS_THAN) ||
+            (Utils::CompareFloats(collision.Intersection.left, collision.Block->GetPositionX() + collision.Block->GetWidth()) == Utils::COMPARE_LESS_THAN &&
+            Utils::CompareFloats(collision.Intersection.left, collision.Block->GetPositionX()) == Utils::COMPARE_GREATER_THAN)))
         {
             if (Utils::CompareFloats(ToUnit()->Velocity.x, 0.f) == Utils::COMPARE_GREATER_THAN &&
-                Utils::CompareFloats(collision.Intersection.left + collision.Intersection.width, collision.Tile.Sprite.getGlobalBounds().left, 10.f) == Utils::COMPARE_EQUAL) // If we already trespassed the tile, don't bother with collision handling, for example if the player jumped from below
+                Utils::CompareFloats(collision.Intersection.left + collision.Intersection.width, collision.Block->GetPositionX(), 10.f) == Utils::COMPARE_EQUAL) // If we already trespassed the tile, don't bother with collision handling, for example if the player jumped from below
             {
                 // We are colliding horizontally with the left side of a tile
                 ToUnit()->Velocity.x = 0.f;
                 ToUnit()->Acceleration.x = 0.f;
-                NewPosition.x = collision.Tile.Sprite.getGlobalBounds().left - sprite.getGlobalBounds().width; // Move back a bit
+                NewPosition.x = collision.Block->GetPositionX() - sprite.getGlobalBounds().width; // Move back a bit
                 std::cout << "Left collision" << std::endl;
             }
             else if (Utils::CompareFloats(ToUnit()->Velocity.x, 0.f) == Utils::COMPARE_LESS_THAN &&
-                Utils::CompareFloats(collision.Intersection.left, collision.Tile.Sprite.getGlobalBounds().left + collision.Tile.Sprite.getGlobalBounds().width, 10.f) == Utils::COMPARE_EQUAL)
+                Utils::CompareFloats(collision.Intersection.left, collision.Block->GetPositionX() + collision.Block->GetWidth(), 10.f) == Utils::COMPARE_EQUAL)
             {
                 // We are colliding horizontally with the right side of a tile
                 ToUnit()->Velocity.x = 0.f;
                 ToUnit()->Acceleration.x = 0.f;
-                NewPosition.x = collision.Tile.Sprite.getGlobalBounds().left + collision.Tile.Sprite.getGlobalBounds().width; // Move back a bit
+                NewPosition.x = collision.Block->GetPositionX() + collision.Block->GetWidth(); // Move back a bit
                 std::cout << "Right collision" << std::endl;
             }
         }
@@ -108,7 +110,7 @@ void Entity::Update(sf::Time const diff)
 
 Unit* Entity::ToUnit()
 {
-    if (Type == TYPEID_PLAYER || Type == TYPEID_CREATURE || Type == TYPEID_UNIT)
+    if (Type == TYPEID_PLAYER || Type == TYPEID_CREATURE || Type == TYPEID_UNIT || Type == TYPEID_OBJECT)
         return dynamic_cast<Unit*>(this);
     return nullptr;
 }

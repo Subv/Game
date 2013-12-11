@@ -1,4 +1,4 @@
-file(GLOB sources *.cpp *.h)
+file(GLOB_RECURSE sources *.cpp *.h)
 
 SET(game_SRCS
 	${game_SRCS}
@@ -7,8 +7,14 @@ SET(game_SRCS
 
 include_directories(
 	${CMAKE_BINARY_DIR}
+	${CMAKE_CURRENT_SOURCE_DIR}
+	${CMAKE_CURRENT_SOURCE_DIR}/Common
+	${CMAKE_CURRENT_SOURCE_DIR}/Entities
+	${CMAKE_CURRENT_SOURCE_DIR}/Logging
+	${CMAKE_CURRENT_SOURCE_DIR}/Maps
+	${CMAKE_CURRENT_SOURCE_DIR}/Maps/Tiles
+	${CMAKE_CURRENT_SOURCE_DIR}/Menu
 	${CMAKE_SOURCE_DIR}/dep/SFML-2.1/include
-	#${CMAKE_SOURCE_DIR}/dep/SFGUI/include
 )
 
 add_executable(Game
@@ -20,5 +26,4 @@ target_link_libraries(Game
 	sfml-graphics
 	sfml-window
 	sfml-system
-	#sfgui
 )

@@ -2,6 +2,7 @@
 #include "Game.h"
 #include "Entity.h"
 #include "Unit.h"
+#include "GameObject.h"
 #include "Player.h"
 #include "Map.h"
 #include "Menu.h"
@@ -139,6 +140,7 @@ void Game::Update(sf::Time const diff)
 
     DrawTexts();
     window.display();
+
     if (State == GAME_STATE_PLAYING)
     {
         sf::View view = GetWindow().getView();
@@ -218,9 +220,10 @@ void Game::PrepareWorld()
 
 
         // Test entity
-        Unit* tst = new Unit(this, "coinGold.png");
+        GameObject* tst = new GameObject(this, "coinGold.png");
         tst->LoadTexture();
-        CurrentMap->AddEntity(tst, sf::Vector2f(7 * 70.f, 3 * 70.f));
+        tst->SetPosition(sf::Vector2f(7 * 70.f, 3 * 70.f));
+        CurrentMap->AddEntity(tst);
         Entities.push_back(tst);
 
         Players.push_back(player1);

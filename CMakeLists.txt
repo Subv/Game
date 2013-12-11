@@ -3,7 +3,6 @@ project(Game)
 cmake_minimum_required(VERSION 2.8)
 cmake_policy(SET CMP0005 OLD)
 
-set(CMAKE_DISABLE_SOURCE_CHANGES OFF)
 set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
 
 # Set RPATH-handing (CMake parameters)

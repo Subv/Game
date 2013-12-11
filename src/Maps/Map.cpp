@@ -2,6 +2,7 @@
 #include "ResourceManager.h"
 #include "Game.h"
 #include "Player.h"
+#include "MovingTile.h"
 #include <list>
 #include <fstream>
 #include <sstream>
@@ -86,11 +87,11 @@ void Map::Load()
 
             if (fileName != "none")
             {
-                sf::Sprite block(sResourceManager->GetTile(fileName));
-                block.setPosition(mapPosition);
+                sf::Sprite* block = new sf::Sprite(sResourceManager->GetTile(fileName));
+                block->setPosition(mapPosition);
                 
-                TileInfo info(j, i, block, collides);
-                Tiles.push_back(info);
+                Tile* tile = new Tile(this, j, i, block, collides);
+                Tiles.push_back(tile);
             }
         }
     }
@@ -98,13 +99,15 @@ void Map::Load()
 
 void Map::Update(sf::Time diff)
 {
+    for (std::vector<Tile*>::iterator itr = Tiles.begin(); itr != Tiles.end(); ++itr)
+        (*itr)->Update(diff);
     Draw();
 }
 
 void Map::Draw()
 {
     for (auto itr = Tiles.begin(); itr != Tiles.end(); ++itr)
-        game->GetWindow().draw(itr->Sprite);
+        (*itr)->Draw(game->GetWindow());
 }
 
 bool Map::HasCollisionAt(sf::Vector2f pos, sf::FloatRect& player, std::list<CollisionInfo>& colliding) const
@@ -112,7 +115,7 @@ bool Map::HasCollisionAt(sf::Vector2f pos, sf::FloatRect& player, std::list<Coll
     sf::FloatRect intersection;
     sf::FloatRect check(pos.x, pos.y, player.width, player.height);
     for (auto itr = Tiles.begin(); itr != Tiles.end(); ++itr)
-        if (itr->Collidable && itr->Sprite.getGlobalBounds().intersects(check, intersection))
+        if ((*itr)->Collidable && (*itr)->Intersects(check, intersection))
             colliding.push_back(CollisionInfo(intersection, *itr));
 
     return !colliding.empty();
@@ -124,8 +127,7 @@ void Map::AddPlayer(Player* player)
     player->AddToMap(this);
 }
 
-void Map::AddEntity(Entity* entity, sf::Vector2f& position)
+void Map::AddEntity(Entity* entity)
 {
-    entity->SetPosition(position);
     entity->AddToMap(this);
 }
