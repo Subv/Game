@@ -3,7 +3,7 @@
 #include "Tile.h"
 #include "SpecialTile.h"
 
-Tile::Tile(Game* _game, int x, int y, bool collides, std::string model) : Entity(_game, model), X(x), Y(y), Collidable(collides)
+Tile::Tile(Game* _game, int x, int y, int z, bool collides, std::string model) : Entity(_game, model), X(x), Y(y), Z(z), Collidable(collides)
 {
     Type = TYPEID_TILE;
 }

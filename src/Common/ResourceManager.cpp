@@ -52,7 +52,7 @@ sf::Texture& ResourceManager::GetTexture(std::string name)
 
     sf::Texture* texture = new sf::Texture();
     texture->loadFromFile(ResourcesDir + "Textures/" + name);
-    texture->setSmooth(true);
+    
     Textures[name] = texture;
 
     return *texture;
@@ -66,6 +66,7 @@ sf::Texture& ResourceManager::GetTile(std::string name)
         return *itr->second;
 
     sf::Texture* texture = new sf::Texture();
+    texture->setSmooth(false);
     texture->loadFromFile(ResourcesDir + "Tiles/" + name);
 
     Tiles[name] = texture;

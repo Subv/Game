@@ -13,7 +13,7 @@ class SpecialTile;
 class Tile : public Entity
 {
 public:
-    Tile(Game* _game, int x, int y, bool collides, std::string model);
+    Tile(Game* _game, int x, int y, int z, bool collides, std::string model);
     virtual ~Tile();
 
     virtual void Update(sf::Time const diff) { } // Normal tiles don't call Entity::Update
@@ -23,6 +23,7 @@ public:
     SpecialTile* ToSpecialTile();
 
     bool Collidable;
+    int Z;
 protected:
     int X;
     int Y;

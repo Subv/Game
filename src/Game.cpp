@@ -129,7 +129,7 @@ void Game::Update(sf::Time const diff)
     if (State == GAME_STATE_PAUSED)
         return;
 
-    window.clear();
+    window.clear(sf::Color(136, 247, 255));
 
     if (State == GAME_STATE_PLAYING)
     {

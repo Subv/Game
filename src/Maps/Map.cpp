@@ -14,7 +14,7 @@ Map::Map(Game* _game) : game(_game), Players(_game->Players), Entities(_game->En
 
 Map::~Map()
 {
-    for (std::vector<Tile*>::iterator itr = Tiles.begin(); itr != Tiles.end(); ++itr)
+    for (std::list<Tile*>::iterator itr = Tiles.begin(); itr != Tiles.end(); ++itr)
         delete *itr;
     TileData.clear();
     Tiles.clear();
@@ -22,6 +22,7 @@ Map::~Map()
 
 void Map::Load()
 {
+    srand(time(NULL));
     std::string dir = sResourceManager->ResourcesDir;
     std::ifstream file(dir + "Levels/level1.txt");
     std::string line;
@@ -60,25 +61,30 @@ void Map::Load()
             }
 
             if (TileData[i][j] == "J")
-                tile = new Tile(game, j, i, true, "brickWall.png");
+                tile = new Tile(game, j, i, 0, true, "brickWall.png");
             else if (TileData[i][j] == "K")
-                tile = new Tile(game, j, i, true, "grass.png");
+                tile = new Tile(game, j, i, 0, true, "grass.png");
             else if (TileData[i][j] == "L")
-                tile = new Tile(game, j, i, true, "grassCenter.png");
+                tile = new Tile(game, j, i, 0, true, "grassCenter.png");
             else if (TileData[i][j] == "M")
-                tile = new Tile(game, j, i, true, "bridgeLogs.png");
+                tile = new Tile(game, j, i, 0, true, "bridgeLogs.png");
             else if (TileData[i][j] == "N")
-                tile = new Tile(game, j, i, true, "hill_large.png");
+                tile = new Tile(game, j, i, 0, true, "hill_large.png");
             else if (TileData[i][j] == "O")
-                tile = new Tile(game, j, i, false, "hill_small.png");
+                tile = new Tile(game, j, i, 0, false, "hill_small.png");
             else if (TileData[i][j] == "P")
-                tile = new Tile(game, j, i, false, "fence.png");
+                tile = new Tile(game, j, i, 0, false, "fence.png");
             else if (TileData[i][j] == "Q")
-                tile = new Tile(game, j, i, false, "fenceBroken.png");
+                tile = new Tile(game, j, i, 0, false, "fenceBroken.png");
             else if (TileData[i][j] == "T")
-                tile = new Tile(game, j, i, false, "bush.png");
+                tile = new Tile(game, j, i, 0, false, "bush.png");
             else if (TileData[i][j] == "B")
                 tile = new MovingTile(game, j, i, "plank.png");
+            else if (TileData[i][j] == "I")
+            {
+                if (rand() % 21 >= 18)
+                    tile = new Tile(game, j, i, -1, false, "cloud" + std::to_string((rand() % 3) + 1) + ".png");
+            }
 
             if (tile)
             {
@@ -89,11 +95,13 @@ void Map::Load()
             }
         }
     }
+
+    SortTiles();
 }
 
 void Map::Update(sf::Time diff)
 {
-    for (std::vector<Tile*>::iterator itr = Tiles.begin(); itr != Tiles.end(); ++itr)
+    for (std::list<Tile*>::iterator itr = Tiles.begin(); itr != Tiles.end(); ++itr)
     {
         (*itr)->Update(diff);
         if (InSight(*itr)) // Only draw the tiles that we can see
@@ -110,7 +118,7 @@ bool Map::HasCollisionAt(sf::Vector2f pos, Entity* entity, std::list<CollisionIn
         if ((*itr)->Collidable && (*itr)->Intersects(check, intersection))
             colliding.push_back(CollisionInfo(intersection, *itr));
         else if ((*itr)->Collidable && (*itr)->IsSpecial())
-            reinterpret_cast<SpecialTile*>(*itr)->LeaveCollision(entity);
+            (*itr)->ToSpecialTile()->LeaveCollision(entity);
     }
 
     return !colliding.empty();
@@ -134,4 +142,13 @@ bool Map::InSight(Tile* tile)
     topLeft.x = view.getCenter().x - view.getSize().x / 2.f;
     topLeft.y = view.getCenter().y - view.getSize().y / 2.f;
     return sf::FloatRect(topLeft, view.getSize()).intersects(sf::FloatRect(tile->GetPositionX(), tile->GetPositionY(), tile->GetWidth(), tile->GetHeight()));
+}
+
+void Map::SortTiles()
+{
+    // This function sorts the tiles based on their draw order (Clouds are drawn first, then static tiles, then special tiles)
+    Tiles.sort([](Tile*& left, Tile*& right)
+    {
+        return left->Z < right->Z;
+    });
 }

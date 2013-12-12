@@ -36,8 +36,9 @@ public:
     bool InSight(Tile* itr);
     sf::Vector2f PlayerStartPosition;
 private:
+    void SortTiles();
     std::vector<std::vector<std::string> > TileData;
-    std::vector<Tile*> Tiles;
+    std::list<Tile*> Tiles;
     std::list<Player*>& Players; // We must not delete this inside Map, it is just a reference to Game::Players
     std::list<Entity*>& Entities;
     Game* game;
