@@ -3,6 +3,7 @@
 #include <mutex>
 
 ResourceManager* ResourceManager::_instance = nullptr;
+std::mutex ResourceManager::LoadMutex;
 
 ResourceManager::ResourceManager() : ResourcesDir("Resources/")
 {

@@ -16,10 +16,12 @@ public:
 
     static ResourceManager* Instance()
     {
-        static std::mutex LoadMutex;
-        std::lock_guard<std::mutex> lock(LoadMutex);
         if (!_instance)
-            _instance = new ResourceManager();
+        {
+            std::lock_guard<std::mutex> lock(LoadMutex);
+            if (!_instance)
+                _instance = new ResourceManager();
+        }
         return _instance;
     }
 
@@ -29,6 +31,7 @@ public:
 
     std::string ResourcesDir;
 
+    static std::mutex LoadMutex;
 private:
     static ResourceManager* _instance;
     std::unordered_map<std::string, sf::Texture*> Textures;
