@@ -9,16 +9,16 @@ ResourceManager::ResourceManager() : ResourcesDir("Resources/")
 
 ResourceManager::~ResourceManager()
 {
-    for (std::unordered_map<sf::Font*>::iterator itr = Fonts.begin(); itr != Fonts.end(); ++itr)
-        delete *itr;
+    for (std::unordered_map<std::string, sf::Font*>::iterator itr = Fonts.begin(); itr != Fonts.end(); ++itr)
+        delete itr->second;
     Fonts.clear();
 
-    for (std::unordered_map<sf::Texture*>::iterator itr = Textures.begin(); itr != Textures.end(); ++itr)
-        delete *itr;
+    for (std::unordered_map<std::string, sf::Texture*>::iterator itr = Textures.begin(); itr != Textures.end(); ++itr)
+        delete itr->second;
     Textures.clear();
 
-    for (std::unordered_map<sf::Texture*>::iterator itr = Tiles.begin(); itr != Tiles.end(); ++itr)
-        delete *itr;
+    for (std::unordered_map<std::string, sf::Texture*>::iterator itr = Tiles.begin(); itr != Tiles.end(); ++itr)
+        delete itr->second;
     Tiles.clear();
 }
 
