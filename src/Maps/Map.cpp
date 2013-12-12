@@ -6,6 +6,7 @@
 #include <list>
 #include <fstream>
 #include <sstream>
+#include <iostream>
 
 Map::Map(Game* _game) : game(_game), Players(_game->Players), Entities(_game->Entities)
 {
@@ -13,6 +14,8 @@ Map::Map(Game* _game) : game(_game), Players(_game->Players), Entities(_game->En
 
 Map::~Map()
 {
+    for (std::vector<Tile*>::iterator itr = Tiles.begin(); itr != Tiles.end(); ++itr)
+        delete *itr;
     TileData.clear();
     Tiles.clear();
 }
@@ -65,7 +68,7 @@ void Map::Load()
             else if (TileData[i][j] == "M")
                 tile = new Tile(game, j, i, true, "bridgeLogs.png");
             else if (TileData[i][j] == "N")
-                tile = new Tile(game, j, i, false, "hill_large.png");
+                tile = new MovingTile(game, j, i, "hill_large.png");
             else if (TileData[i][j] == "O")
                 tile = new Tile(game, j, i, false, "hill_small.png");
             else if (TileData[i][j] == "P")
@@ -88,24 +91,30 @@ void Map::Load()
 
 void Map::Update(sf::Time diff)
 {
+    //sf::Clock cl;
     for (std::vector<Tile*>::iterator itr = Tiles.begin(); itr != Tiles.end(); ++itr)
         (*itr)->Update(diff);
+    //std::cout << "Finished updating in " << cl.getElapsedTime().asSeconds() << " seconds" << std::endl;
     Draw();
 }
 
 void Map::Draw()
 {
-    for (auto itr = Tiles.begin(); itr != Tiles.end(); ++itr)
+    for (std::vector<Tile*>::iterator itr = Tiles.begin(); itr != Tiles.end(); ++itr)
         (*itr)->Draw();
 }
 
-bool Map::HasCollisionAt(sf::Vector2f pos, sf::FloatRect player, std::list<CollisionInfo>& colliding) const
+bool Map::HasCollisionAt(sf::Vector2f pos, Entity* entity, std::list<CollisionInfo>& colliding) const
 {
     sf::FloatRect intersection;
-    sf::FloatRect check(pos.x, pos.y, player.width, player.height);
+    sf::FloatRect check(pos.x, pos.y, entity->GetWidth(), entity->GetHeight());
     for (auto itr = Tiles.begin(); itr != Tiles.end(); ++itr)
+    {
         if ((*itr)->Collidable && (*itr)->Intersects(check, intersection))
             colliding.push_back(CollisionInfo(intersection, *itr));
+        else if ((*itr)->Collidable && (*itr)->IsSpecial())
+            reinterpret_cast<SpecialTile*>(*itr)->LeaveCollision(entity);
+    }
 
     return !colliding.empty();
 }

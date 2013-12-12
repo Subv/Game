@@ -11,7 +11,7 @@ class Entity;
 class SpecialTile : public Tile
 {
 public:
-    SpecialTile(Game* _game, int x, int y);
+    SpecialTile(Game* _game, int x, int y, std::string model);
     virtual ~SpecialTile();
 
     // Optional handlers
@@ -19,6 +19,8 @@ public:
     virtual void OnLeftCollision(Entity* collider) { }
     virtual void OnRightCollision(Entity* collider) { }
     virtual void HandleFloor(Entity* entity) { }
+    virtual void LeaveCollision(Entity* collider) { }
+    virtual bool IsSpecial() const { return true; }
 
     virtual void Update(sf::Time const diff);
 };

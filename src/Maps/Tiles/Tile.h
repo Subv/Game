@@ -17,6 +17,7 @@ public:
 
     virtual void Update(sf::Time const diff) { } // Normal tiles don't call Entity::Update
     virtual bool Intersects(sf::FloatRect& check, sf::FloatRect& intersection) const;
+    virtual bool IsSpecial() const { return false; }
 
     bool Collidable;
 protected:

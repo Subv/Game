@@ -20,18 +20,29 @@ void Player::Update(sf::Time const diff)
         // Handle movement for player 1
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
         {
-            LoadMoveTexture(2);
-            Velocity.x = -Common::HorizontalMoveSpeed;
+            if (!Vehicle)
+            {
+                LoadMoveTexture(2);
+                Velocity.x = -Common::HorizontalMoveSpeed;
+            }
+            else
+                Velocity.x += -Common::HorizontalMoveSpeed;
         }
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
         {
-            LoadMoveTexture(1);
-            Velocity.x = Common::HorizontalMoveSpeed;
+            if (!Vehicle)
+            {
+                LoadMoveTexture(1);
+                Velocity.x = Common::HorizontalMoveSpeed;
+            }
+            else
+                Velocity.x += Common::HorizontalMoveSpeed;
         }
         else
         {
             LoadMoveTexture(0);
-            Brake();
+            if (!Vehicle)
+                Brake();
         }
     }
     else if (PlayerNumber == 1)

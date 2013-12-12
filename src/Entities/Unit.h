@@ -5,6 +5,7 @@
 #include "Entity.h"
 
 class Game;
+class Tile;
 
 class Unit : public Entity
 {
@@ -21,5 +22,6 @@ public:
 
     int HealthPoints;
     bool jumping;
+    Tile* Vehicle;
 };
 #endif

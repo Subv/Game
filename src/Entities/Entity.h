@@ -42,6 +42,9 @@ public:
     sf::Vector2f Position;
     
     std::string TextureName; // Original texture name
+
+    sf::Vector2f Velocity;
+    sf::Vector2f Acceleration;
 protected:
     bool inAir;
     Map* map;
@@ -49,8 +52,5 @@ protected:
     Game* game;
     sf::Texture texture;
     sf::Sprite sprite;
-
-    sf::Vector2f Velocity;
-    sf::Vector2f Acceleration;
 };
 #endif
