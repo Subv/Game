@@ -5,7 +5,7 @@
 
 MovingTile::MovingTile(Game* _game, int x, int y, std::string model) : SpecialTile(_game, x, y, model)
 {
-    Velocity.x = -200.f;
+    Velocity.x = 200.f;
     Displacement = 0.f;
 }
 
@@ -18,11 +18,8 @@ void MovingTile::Update(sf::Time const diff)
 {
     Displacement += abs(Velocity.x * 0.02f);
 
-    if (Displacement > 100.f)
-    {
-        Displacement = 0.f;
-        Velocity.x *= -1.f;
-    }
+    if (Displacement > 350.f)
+        StopHorizontalMovement(); // Changes the direction of the movement and resets the displacement counter
 
     // We have to manually update the position here bypassing the velocity
     NewPosition.x += Velocity.x * 0.02f;
@@ -36,18 +33,42 @@ void MovingTile::Update(sf::Time const diff)
 
 void MovingTile::OnTopCollision(Entity* collider)
 {
-    std::cout << "Entity boarded me" << std::endl;
-
-    if (collider->GetTypeId() == TYPEID_PLAYER)
-        reinterpret_cast<Player*>(collider)->Vehicle = this;
+    if (collider->IsUnit())
+        collider->ToUnit()->Vehicle = this;
 
     Passengers.insert(collider);
 }
 
 void MovingTile::LeaveCollision(Entity* collider)
 {
-    if (collider->GetTypeId() == TYPEID_PLAYER)
-        reinterpret_cast<Player*>(collider)->Vehicle = nullptr;
+    if (Passengers.find(collider) == Passengers.end())
+        return;
+
+    if (collider->IsUnit())
+        collider->ToUnit()->Vehicle = nullptr;
 
     Passengers.erase(collider);
+}
+
+void MovingTile::StopHorizontalMovement()
+{
+    Velocity.x *= -1.f;
+    Displacement = 0.f;
+}
+
+void MovingTile::StopVerticalMovement()
+{
+    Velocity.y *= -1.f;
+    Displacement = 0.f;
+}
+
+void MovingTile::HandleFloor(Entity* entity)
+{
+    // Just in case that the entity didn't actually fall upon us, but instead walked at the same height level
+    if (Passengers.find(entity) == Passengers.end())
+    {
+        if (entity->IsUnit())
+            entity->ToUnit()->Vehicle = this;
+        Passengers.insert(entity);
+    }
 }

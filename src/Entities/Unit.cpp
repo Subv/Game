@@ -3,7 +3,7 @@
 #include "ResourceManager.h"
 #include "Utils.h"
 
-Unit::Unit(Game* _game, std::string model) : Entity(_game, model), jumping(false)
+Unit::Unit(Game* _game, std::string model) : Entity(_game, model), jumping(false), Vehicle(nullptr)
 {
     Type = TYPEID_UNIT;
     HealthPoints = Common::DefaultHealthPoints;

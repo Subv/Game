@@ -19,6 +19,7 @@ public:
 
     virtual void Jump();
     virtual bool IsJumping() const { return jumping; }
+    virtual bool IsUnit() override { return true; }
 
     int HealthPoints;
     bool jumping;

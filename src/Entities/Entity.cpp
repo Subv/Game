@@ -74,15 +74,17 @@ void Entity::Update(sf::Time const diff)
             if (Velocity.y > 0.f)
             {
                 // We touched the top part of the tile, stop falling
-                Velocity.y = 0.f;
-                Acceleration.y = 0.f;
+                StopVerticalMovement();
                 NewPosition.y = collision.Intersection.top - sprite.getGlobalBounds().height + 1.f; // Don't go too low, correct the position if that happens
                 
                 if (collision.Block->IsSpecial())
-                    reinterpret_cast<SpecialTile*>(collision.Block)->OnTopCollision(this);
-
-                std::cout << "Top collision" << std::endl;
+                    collision.Block->ToSpecialTile()->OnTopCollision(this);
+                if (Type == TYPEID_PLAYER)
+                    std::cout << "Top collision" << std::endl;
             }
+
+            if (collision.Block->IsSpecial())
+                collision.Block->ToSpecialTile()->HandleFloor(this);
         }
         // Detect horizontal collisions
         else if (Utils::CompareFloats(collision.Intersection.top, collision.Block->GetPositionY() + collision.Block->GetHeight() / 2.f) == Utils::COMPARE_LESS_THAN && // If the player is at least halfway below the tile, don't collide
@@ -95,19 +97,19 @@ void Entity::Update(sf::Time const diff)
                 Utils::CompareFloats(collision.Intersection.left + collision.Intersection.width, collision.Block->GetPositionX(), 10.f) == Utils::COMPARE_EQUAL) // If we already trespassed the tile, don't bother with collision handling, for example if the player jumped from below
             {
                 // We are colliding horizontally with the left side of a tile
-                Velocity.x = 0.f;
-                Acceleration.x = 0.f;
+                StopHorizontalMovement();
                 NewPosition.x = collision.Block->GetPositionX() - sprite.getGlobalBounds().width; // Move back a bit
-                std::cout << "Left collision" << std::endl;
+                if (Type == TYPEID_PLAYER)
+                    std::cout << "Left collision" << std::endl;
             }
             else if (Utils::CompareFloats(Velocity.x, 0.f) == Utils::COMPARE_LESS_THAN &&
                 Utils::CompareFloats(collision.Intersection.left, collision.Block->GetPositionX() + collision.Block->GetWidth(), 10.f) == Utils::COMPARE_EQUAL)
             {
                 // We are colliding horizontally with the right side of a tile
-                Velocity.x = 0.f;
-                Acceleration.x = 0.f;
+                StopHorizontalMovement();
                 NewPosition.x = collision.Block->GetPositionX() + collision.Block->GetWidth(); // Move back a bit
-                std::cout << "Right collision" << std::endl;
+                if (Type == TYPEID_PLAYER)
+                    std::cout << "Right collision" << std::endl;
             }
         }
     }
@@ -124,7 +126,7 @@ void Entity::Update(sf::Time const diff)
 
 Unit* Entity::ToUnit()
 {
-    if (Type == TYPEID_PLAYER || Type == TYPEID_CREATURE || Type == TYPEID_UNIT || Type == TYPEID_OBJECT)
+    if (IsUnit())
         return dynamic_cast<Unit*>(this);
     return nullptr;
 }
@@ -147,8 +149,14 @@ void Entity::LoadTexture()
     sprite.setPosition(Position);
 }
 
-void Entity::Brake()
+void Entity::StopHorizontalMovement()
 {
     Velocity.x = 0.f;
     Acceleration.x = 0.f;
+}
+
+void Entity::StopVerticalMovement()
+{
+    Velocity.y = 0.f;
+    Acceleration.y = 0.f;
 }

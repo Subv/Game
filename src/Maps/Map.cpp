@@ -68,7 +68,7 @@ void Map::Load()
             else if (TileData[i][j] == "M")
                 tile = new Tile(game, j, i, true, "bridgeLogs.png");
             else if (TileData[i][j] == "N")
-                tile = new MovingTile(game, j, i, "hill_large.png");
+                tile = new Tile(game, j, i, true, "hill_large.png");
             else if (TileData[i][j] == "O")
                 tile = new Tile(game, j, i, false, "hill_small.png");
             else if (TileData[i][j] == "P")
@@ -77,6 +77,8 @@ void Map::Load()
                 tile = new Tile(game, j, i, false, "fenceBroken.png");
             else if (TileData[i][j] == "T")
                 tile = new Tile(game, j, i, false, "bush.png");
+            else if (TileData[i][j] == "B")
+                tile = new MovingTile(game, j, i, "plank.png");
 
             if (tile)
             {

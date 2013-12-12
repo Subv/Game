@@ -34,10 +34,12 @@ public:
 
     virtual void AddToMap(Map* _map) { map = _map; }
 
-    virtual void Brake();
+    virtual void StopHorizontalMovement();
+    virtual void StopVerticalMovement();
+
+    virtual bool IsUnit() { return false; }
     
     Unit* ToUnit();
-
     sf::Vector2f NewPosition;
     sf::Vector2f Position;
     

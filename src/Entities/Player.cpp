@@ -42,7 +42,7 @@ void Player::Update(sf::Time const diff)
         {
             LoadMoveTexture(0);
             if (!Vehicle)
-                Brake();
+                StopHorizontalMovement();
         }
     }
     else if (PlayerNumber == 1)
@@ -53,7 +53,7 @@ void Player::Update(sf::Time const diff)
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
             Velocity.x = Common::HorizontalMoveSpeed;
         else
-            Brake();
+            StopHorizontalMovement();
     }
     
     //std::cout << "Velocity: X: " << Velocity.x << " Y: " << Velocity.y << std::endl;

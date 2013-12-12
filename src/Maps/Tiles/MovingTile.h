@@ -17,6 +17,11 @@ public:
     void OnTopCollision(Entity* collider) override;
     void LeaveCollision(Entity* collider) override;
 
+    void HandleFloor(Entity* entity) override;
+
+    void StopHorizontalMovement() override;
+    void StopVerticalMovement() override;
+
 private:
     float Displacement;
     std::set<Entity*> Passengers;
