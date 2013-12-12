@@ -232,7 +232,7 @@ void Game::PrepareWorld()
     });
 
     // Start the loader
-    loader.join();
+    loader.detach();
 }
 
 Player* Game::GetPlayer(int index /*= 0*/)

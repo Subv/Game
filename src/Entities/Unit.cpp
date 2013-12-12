@@ -26,8 +26,8 @@ void Unit::Update(sf::Time const diff)
     sf::Vector2f& newPos = NewPosition;
 
     // Update the velocity
-    Velocity.x += Acceleration.x * diff.asSeconds();
-    Velocity.y += Acceleration.y * diff.asSeconds();
+    Velocity.x += Acceleration.x * 0.02f;
+    Velocity.y += Acceleration.y * 0.02f;
 
     if (Velocity.x > Common::TerminalHorizontalSpeed) // Terminal horizontal velocity
         Velocity.x = Common::TerminalHorizontalSpeed;
@@ -39,10 +39,10 @@ void Unit::Update(sf::Time const diff)
 
     // Update the position
     if (Utils::CompareFloats(Velocity.x, 0.f) != Utils::COMPARE_EQUAL)
-        newPos.x += Velocity.x * diff.asSeconds();
+        newPos.x += Velocity.x * 0.02f;
     
     if (Utils::CompareFloats(Velocity.y, 0.f) != Utils::COMPARE_EQUAL)
-        newPos.y += Velocity.y * diff.asSeconds();
+        newPos.y += Velocity.y * 0.02f;
 
     Entity::Update(diff);
 }

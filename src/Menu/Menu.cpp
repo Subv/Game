@@ -13,7 +13,7 @@ Menu::~Menu()
 
 }
 
-void Menu::Update(sf::Time diff)
+void Menu::Update(sf::Time /*diff*/)
 {
     Draw();
 }

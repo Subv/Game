@@ -61,9 +61,9 @@ void Map::Load()
             else if (TileData[i][j] == "K")
                 tile = new Tile(game, j, i, true, "grass.png");
             else if (TileData[i][j] == "L")
-                tile = new Tile(game, j, i, false, "grassCenter.png");
+                tile = new Tile(game, j, i, true, "grassCenter.png");
             else if (TileData[i][j] == "M")
-                tile = new Tile(game, j, i, false, "bridgeLogs.png");
+                tile = new Tile(game, j, i, true, "bridgeLogs.png");
             else if (TileData[i][j] == "N")
                 tile = new Tile(game, j, i, false, "hill_large.png");
             else if (TileData[i][j] == "O")
