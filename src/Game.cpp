@@ -17,6 +17,17 @@ Game::Game() : window(sf::VideoMode(1000, 600), "Game"), CurrentMap(nullptr), Me
 
 Game::~Game()
 {
+    delete CurrentMap;
+    delete MenuMap;
+
+    for (std::list<Player*>::iterator itr = Players.begin(); itr != Players.end(); ++itr)
+        delete *itr;
+    Players.clear();
+
+    for (std::list<Entity*>::iterator itr = Entities.begin(); itr != Entities.end(); ++itr)
+        delete *itr;
+    Entities.clear();
+
     if (window.isOpen())
         window.close();
 }
