@@ -91,17 +91,12 @@ void Map::Load()
 
 void Map::Update(sf::Time diff)
 {
-    //sf::Clock cl;
     for (std::vector<Tile*>::iterator itr = Tiles.begin(); itr != Tiles.end(); ++itr)
+    {
         (*itr)->Update(diff);
-    //std::cout << "Finished updating in " << cl.getElapsedTime().asSeconds() << " seconds" << std::endl;
-    Draw();
-}
-
-void Map::Draw()
-{
-    for (std::vector<Tile*>::iterator itr = Tiles.begin(); itr != Tiles.end(); ++itr)
-        (*itr)->Draw();
+        if (InSight(*itr)) // Only draw the tiles that we can see
+            (*itr)->Draw();
+    }
 }
 
 bool Map::HasCollisionAt(sf::Vector2f pos, Entity* entity, std::list<CollisionInfo>& colliding) const
@@ -128,4 +123,13 @@ void Map::AddPlayer(Player* player)
 void Map::AddEntity(Entity* entity)
 {
     entity->AddToMap(this);
+}
+
+bool Map::InSight(Tile* tile)
+{
+    sf::View view = game->GetWindow().getView();
+    sf::Vector2f topLeft;
+    topLeft.x = view.getCenter().x - view.getSize().x / 2.f;
+    topLeft.y = view.getCenter().y - view.getSize().y / 2.f;
+    return sf::FloatRect(topLeft, view.getSize()).intersects(sf::FloatRect(tile->GetPositionX(), tile->GetPositionY(), tile->GetWidth(), tile->GetHeight()));
 }

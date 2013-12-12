@@ -28,13 +28,12 @@ public:
     void Load();
 
     void Update(sf::Time diff);
-    void Draw();
 
     bool HasCollisionAt(sf::Vector2f pos, Entity* entity, std::list<CollisionInfo>& colliding) const;
 
     void AddPlayer(Player* player);
     void AddEntity(Entity* entity);
-
+    bool InSight(Tile* itr);
     sf::Vector2f PlayerStartPosition;
 private:
     std::vector<std::vector<std::string> > TileData;

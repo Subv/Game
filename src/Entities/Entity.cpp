@@ -52,10 +52,6 @@ void Entity::Update(sf::Time const diff)
 
         if (game->DebugEnabled())
         {
-            sf::RectangleShape rect(sf::Vector2f(collision.Intersection.width, collision.Intersection.height));
-            rect.setPosition(collision.Intersection.left, collision.Intersection.top);
-            game->GetWindow().draw(rect);
-
             sf::RectangleShape rect2(sf::Vector2f(collision.Block->GetWidth(), collision.Block->GetHeight()));
             rect2.setPosition(collision.Block->GetPositionX(), collision.Block->GetPositionY());
             rect2.setOutlineColor(sf::Color::Blue);

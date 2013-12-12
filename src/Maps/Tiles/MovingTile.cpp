@@ -30,7 +30,7 @@ void MovingTile::Update(sf::Time const diff)
     // Update our passengers, move them with us
     for (std::set<Entity*>::iterator itr = Passengers.begin(); itr != Passengers.end(); ++itr)
         (*itr)->Velocity.x = Velocity.x;
-    std::cout << "Adding velocity to " << Passengers.size() << std::endl;
+    
     SpecialTile::Update(diff);
 }
 

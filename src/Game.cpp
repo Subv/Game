@@ -12,7 +12,7 @@ Game* Game::_instance = nullptr;
 
 Game::Game() : window(sf::VideoMode(1000, 600), "Game"), CurrentMap(nullptr), MenuMap(nullptr), fps(0), debugMode(false), State(GAME_STATE_NONE), PreviousState(GAME_STATE_NONE)
 {
-    window.setFramerateLimit(60);
+    window.setFramerateLimit(120);
 }
 
 Game::~Game()
@@ -154,12 +154,9 @@ void Game::Update(sf::Time const diff)
 
     if (State == GAME_STATE_PLAYING)
     {
-        sf::View view = GetWindow().getView();
-        sf::Vector2f pos = view.getCenter();
-        pos.x = GetPlayer()->GetPositionX();
-        pos.y = GetPlayer()->GetPositionY();
-        view.setCenter(pos);
-        GetWindow().setView(view);
+        sf::View view = window.getView();
+        view.setCenter(GetPlayer()->GetPositionX(), GetPlayer()->GetPositionY());
+        window.setView(view);
     }
 }
 
@@ -175,7 +172,7 @@ void Game::DrawTexts()
     {
         sf::Text text("Loading Level", font);
         text.setColor(sf::Color::White);
-        text.setPosition(400.0f, 300.0f);
+        text.setPosition(window.getView().getCenter().x - 90.f, window.getView().getCenter().y - 35.f);
         text.setStyle(sf::Text::Style::Bold);
         window.draw(text);
     }
