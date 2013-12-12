@@ -3,7 +3,10 @@
 
 #include <SFML/Graphics.hpp>
 #include <unordered_map>
-#include <iostream>
+#include <string>
+#include <thread>
+#include <mutex>
+
 
 class ResourceManager
 {
@@ -13,6 +16,8 @@ public:
 
     static ResourceManager* Instance()
     {
+        static std::mutex LoadMutex;
+        std::lock_guard<std::mutex> lock(LoadMutex);
         if (!_instance)
             _instance = new ResourceManager();
         return _instance;
@@ -27,8 +32,11 @@ public:
 private:
     static ResourceManager* _instance;
     std::unordered_map<std::string, sf::Texture*> Textures;
+    std::mutex TexturesMutex;
     std::unordered_map<std::string, sf::Font*> Fonts;
+    std::mutex FontsMutex;
     std::unordered_map<std::string, sf::Texture*> Tiles;
+    std::mutex TilesMutex;
 };
 
 #define sResourceManager ResourceManager::Instance()

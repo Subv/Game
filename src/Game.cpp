@@ -206,6 +206,10 @@ void Game::DrawTexts()
 
 void Game::PrepareWorld()
 {
+    // Don't try to launch another thread if there's already a level being loaded
+    if (State == GAME_STATE_LOADING_LEVEL)
+        return;
+
     State = GAME_STATE_LOADING_LEVEL;
     
     // Create a thread to load the level

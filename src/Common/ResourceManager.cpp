@@ -1,4 +1,6 @@
 #include "ResourceManager.h"
+#include <thread>
+#include <mutex>
 
 ResourceManager* ResourceManager::_instance = nullptr;
 
@@ -24,6 +26,8 @@ ResourceManager::~ResourceManager()
 
 sf::Font& ResourceManager::GetFont(std::string _name)
 {
+    std::lock_guard<std::mutex> lock(FontsMutex);
+
     std::string name;
     std::transform(_name.begin(), _name.end(), std::back_inserter(name), ::toupper);
     auto itr = Fonts.find(name);
@@ -40,6 +44,7 @@ sf::Font& ResourceManager::GetFont(std::string _name)
 
 sf::Texture& ResourceManager::GetTexture(std::string name)
 {
+    std::lock_guard<std::mutex> lock(TexturesMutex);
     auto itr = Textures.find(name);
     if (itr != Textures.end())
         return *itr->second;
@@ -54,6 +59,7 @@ sf::Texture& ResourceManager::GetTexture(std::string name)
 
 sf::Texture& ResourceManager::GetTile(std::string name)
 {
+    std::lock_guard<std::mutex> lock(TilesMutex);
     auto itr = Tiles.find(name);
     if (itr != Tiles.end())
         return *itr->second;

@@ -25,7 +25,7 @@ add_definitions(-D_BUILD_DIRECTIVE=\\"${CMAKE_BUILD_TYPE}\\")
 
 IF (UNIX)
 	message("Enabling C++11 for GCC")
-	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0 -ggdb")
+	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0 -g -ggdb")
 	list( APPEND CMAKE_CXX_FLAGS "-std=c++0x ${CMAKE_CXX_FLAGS} -g -ftest-coverage -fprofile-arcs")
 ENDIF()
 
