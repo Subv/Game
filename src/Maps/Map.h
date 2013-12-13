@@ -5,6 +5,7 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <list>
+#include <queue>
 
 class Tile;
 class Game;
@@ -34,6 +35,9 @@ public:
     void AddPlayer(Player* player);
     void AddEntity(Entity* entity);
     bool InSight(Tile* itr);
+
+    void AddToRemoveQueue(Entity* entity);
+
     sf::Vector2f PlayerStartPosition;
 private:
     void SortTiles();
@@ -41,6 +45,7 @@ private:
     std::list<Tile*> Tiles;
     std::list<Player*>& Players; // We must not delete this inside Map, it is just a reference to Game::Players
     std::list<Entity*>& Entities;
+    std::queue<Entity*> RemoveQueue;
     Game* game;
 };
 #endif

@@ -5,7 +5,7 @@
 #include "Game.h"
 #include "Input.h"
 
-Player::Player(Game* _game, int index, std::string texture) : Unit(_game, texture), PlayerNumber(index)
+Player::Player(Game* _game, int index, std::string texture) : Unit(_game, texture), PlayerNumber(index), Coins(0)
 {
     Type = TYPEID_PLAYER;
 }

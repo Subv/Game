@@ -13,6 +13,7 @@
 class Game;
 class Map;
 class Unit;
+class Player;
 
 class Entity
 {
@@ -36,8 +37,13 @@ public:
     virtual void SetPosition(sf::Vector2f pos);
 
     virtual bool IsInAir() const { return inAir; };
+    virtual bool ShouldFall() const { return true; }
+
+    virtual bool Intersects(Entity const* other) const;
+    virtual void HandleCollision(Entity* collider) { }
 
     virtual void AddToMap(Map* _map) { map = _map; }
+    void RemoveFromWorld();
 
     virtual void StopHorizontalMovement();
     virtual void StopVerticalMovement();
@@ -50,6 +56,8 @@ public:
     sf::Vector2f GetCenter() const;
 
     Unit* ToUnit();
+    Player* ToPlayer();
+
     sf::Vector2f NewPosition;
     sf::Vector2f Position;
     

@@ -27,7 +27,7 @@ void Input::LoadBindings()
     std::function<void(thor::ActionContext<Actions>)>* _pauseHandler = new std::function<void(thor::ActionContext<Actions>)>(std::bind(&Input::TogglePause, this, std::placeholders::_1));
 
     std::ifstream bnd;
-    bnd.open("Resources/Bindings.bnd");
+    bnd.open(Common::KeyBindingsFile);
     std::string line;
     bnd >> line;
     while (!bnd.eof())
@@ -38,12 +38,12 @@ void Input::LoadBindings()
         auto lhs = Utils::Split(sides[0], ",");
         auto rhs = Utils::Split(sides[1], ",");
 
-        auto player = std::stoi(lhs[0]);
-        auto action = std::stoi(lhs[1]);
+        unsigned int player = std::stoi(lhs[0]);
+        unsigned int action = std::stoi(lhs[1]);
         
-        auto device = std::stoi(rhs[0]);
-        auto type = std::stoi(rhs[1]);
-        auto key = std::stoi(rhs[2]);
+        unsigned int device = std::stoi(rhs[0]);
+        unsigned int type = std::stoi(rhs[1]);
+        unsigned int key = std::stoi(rhs[2]);
 
         if (player >= Common::MaxPlayers)
             continue;
@@ -58,7 +58,7 @@ void Input::LoadBindings()
 void Input::SaveBindings()
 {
     std::ofstream file;
-    file.open("Resources/Bindings.bnd");
+    file.open(Common::KeyBindingsFile);
     
     for (unsigned int i = 0; i < Common::MaxPlayers; ++i)
         for (BindingsMap::const_iterator itr = KeyBindings[i].begin(); itr != KeyBindings[i].end(); ++itr)
@@ -79,7 +79,7 @@ void Input::LoadActions()
             if (itr->second.Device == DEVICE_KEYBOARD)
                 (*actions)[itr->first] = thor::Action(itr->second.Button.KeyboardKey);
             else if (itr->second.Type == BUTTON_TYPE_AXIS)
-                (*actions)[itr->first] = thor::Action(thor::joy(0).axis(itr->second.Button.JoystickAxis).above(30.f));
+                (*actions)[itr->first] = thor::Action(thor::joy(i).axis(itr->second.Button.JoystickAxis).above(30.f));
             else if (itr->second.Device == DEVICE_EVENT)
             {
                 (*actions)[itr->first] = thor::Action(itr->second.Button.Event);
@@ -87,7 +87,7 @@ void Input::LoadActions()
                     callbacks->connect(itr->first, *itr->second.Callback);
             }
             else
-                (*actions)[itr->first] = thor::Action(thor::joy(0).button(itr->second.Button.JoystickButton));
+                (*actions)[itr->first] = thor::Action(thor::joy(i).button(itr->second.Button.JoystickButton));
 
             if (old.isValid())
                 (*actions)[itr->first] = (*actions)[itr->first] || old;

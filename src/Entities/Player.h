@@ -21,5 +21,6 @@ public:
     void LoadMoveTexture(int type);
 
     int PlayerNumber;
+    unsigned int Coins;
 };
 #endif

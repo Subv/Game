@@ -26,6 +26,7 @@ class Game
 public:
     friend Map;
     friend Input;
+    friend Entity;
 
     Game();
     ~Game();
@@ -42,6 +43,8 @@ public:
     void DrawTexts();
 
     sf::RenderWindow& GetWindow() { return window; }
+    Map* GetCurrentMap() { return CurrentMap; }
+
     void PrepareWorld();
     bool DebugEnabled() const { return debugMode; }
 

@@ -19,7 +19,7 @@ void Unit::Update(sf::Time const diff)
     // Stuff to keep in mind:
     // * The Y coordinate increases as we go down the screen, and decreases as we go up, hence the gravity must be positive for the characters to fall
 
-    if (IsInAir())
+    if (IsInAir() && ShouldFall())
         Acceleration.y = Common::GravityAcceleration;
 
     NewPosition = Position;

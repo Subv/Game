@@ -210,10 +210,6 @@ void Game::PrepareWorld()
     
     // Create a thread to load the level
     std::thread loader([&]() {
-        delete CurrentMap;
-        CurrentMap = new Map(this);
-        CurrentMap->Load();
-
         for (auto itr = Players.begin(); itr != Players.end(); ++itr)
             delete *itr;
         Players.clear();
@@ -222,24 +218,25 @@ void Game::PrepareWorld()
             delete *itr;
         Entities.clear();
 
-        Player* player1 = new Player(this, 0, "p1/p1_walk08.png");
-        player1->LoadTexture();
-        CurrentMap->AddPlayer(player1);
-        
-        Player* player2 = new Player(this, 1, "p1/p1_walk08.png");
-        player2->LoadTexture();
-        CurrentMap->AddPlayer(player2);
+        delete CurrentMap;
+        CurrentMap = new Map(this);
+        CurrentMap->Load();
 
+        for (unsigned int i = 0; i < Common::NumPlayers; ++i)
+        {
+            Player* player = new Player(this, i, "p1/p1_walk08.png");
+            player->LoadTexture();
+            CurrentMap->AddPlayer(player);
+            Players.push_back(player);
+        }
 
         // Test entity
-        GameObject* tst = new GameObject(this, "coinGold.png");
+        /*GameObject* tst = new GameObject(this, "coinGold.png");
         tst->LoadTexture();
         tst->SetPosition(sf::Vector2f(7 * 70.f, 3 * 70.f));
         CurrentMap->AddEntity(tst);
-        Entities.push_back(tst);
+        Entities.push_back(tst);*/
 
-        Players.push_back(player1);
-        Players.push_back(player2);
         State = GAME_STATE_PLAYING;
     });
 

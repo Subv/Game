@@ -3,6 +3,7 @@
 #include "Game.h"
 #include "Player.h"
 #include "MovingTile.h"
+#include "GameObject.h"
 #include <list>
 #include <fstream>
 #include <sstream>
@@ -22,7 +23,8 @@ Map::~Map()
 
 void Map::Load()
 {
-    srand(time(NULL));
+    srand((unsigned int)(time(NULL)));
+
     std::string dir = sResourceManager->ResourcesDir;
     std::ifstream file(dir + "Levels/level1.txt");
     std::string line;
@@ -31,7 +33,7 @@ void Map::Load()
     {
         std::vector<std::string> TileLine;
         std::stringstream ss;
-        for (int i = 0; i < line.length(); i++)
+        for (unsigned int i = 0; i < line.length(); i++)
         {
             if (line[i] != ' ')
             {
@@ -44,9 +46,9 @@ void Map::Load()
         TileData.push_back(TileLine);
     }
 
-    for (int i = 0; i < TileData.size(); ++i)
+    for (unsigned int i = 0; i < TileData.size(); ++i)
     {
-        for (int j = 0; j < TileData[i].size(); ++j)
+        for (unsigned int j = 0; j < TileData[i].size(); ++j)
         {
             if (TileData[i][j] == "_")
                 continue;
@@ -85,6 +87,15 @@ void Map::Load()
                 if (rand() % 21 >= 18)
                     tile = new Tile(game, j, i, -1, false, "cloud" + std::to_string((rand() % 3) + 1) + ".png");
             }
+            else if (TileData[i][j] == "A")
+            {
+                GameObject* coin = new GameObject(game, "coinGold.png");
+                coin->LoadTexture();
+                coin->SetPosition(sf::Vector2f(mapPosition.x, mapPosition.y - 20.f));
+                coin->AddToMap(this);
+                game->Entities.push_back(coin);
+                continue;
+            }
 
             if (tile)
             {
@@ -101,6 +112,15 @@ void Map::Load()
 
 void Map::Update(sf::Time diff)
 {
+    while (!RemoveQueue.empty())
+    {
+        Entity*& removed = RemoveQueue.front();
+        Entities.remove(removed);
+        Players.remove(removed->ToPlayer());
+        delete removed;
+        RemoveQueue.pop();
+    }
+
     for (std::list<Tile*>::iterator itr = Tiles.begin(); itr != Tiles.end(); ++itr)
     {
         (*itr)->Update(diff);
@@ -151,4 +171,10 @@ void Map::SortTiles()
     {
         return left->Z < right->Z;
     });
+}
+
+void Map::AddToRemoveQueue(Entity* entity)
+{
+    // Adds an entity to the remove queue, to be removed on the next Update tick
+    RemoveQueue.push(entity);
 }

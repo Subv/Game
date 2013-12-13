@@ -5,6 +5,7 @@
 #include "Game.h"
 #include "ResourceManager.h"
 #include "Unit.h"
+#include "Player.h"
 #include "Utils.h"
 #include "Map.h"
 #include "Tile.h"
@@ -125,6 +126,12 @@ void Entity::Update(sf::Time const diff)
         }
     }
 
+
+    // Now we perform Entity-Entity collision detection, these collisions don't stop movement, they are used for events like eating coins, bullet hit detection, etc.
+    for (auto& entity : game->Entities)
+        if (entity->Intersects(this))
+            entity->HandleCollision(this);
+
     Position.x = NewPosition.x;
     Position.y = NewPosition.y;
 
@@ -139,6 +146,13 @@ Unit* Entity::ToUnit()
 {
     if (IsUnit())
         return dynamic_cast<Unit*>(this);
+    return nullptr;
+}
+
+Player* Entity::ToPlayer()
+{
+    if (GetTypeId() == TYPEID_PLAYER)
+        return dynamic_cast<Player*>(this);
     return nullptr;
 }
 
@@ -189,4 +203,15 @@ sf::Vector2f Entity::GetCenter() const
 void Entity::Flicker(sf::Time const span)
 {
     
+}
+
+bool Entity::Intersects(Entity const* other) const
+{
+    sf::FloatRect intersection;
+    return sprite.getGlobalBounds().intersects(other->sprite.getGlobalBounds(), intersection);
+}
+
+void Entity::RemoveFromWorld()
+{
+    game->GetCurrentMap()->AddToRemoveQueue(this);
 }

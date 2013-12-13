@@ -13,6 +13,9 @@ enum TypeId
 
 namespace Common
 {
+    extern const std::string KeyBindingsFile;
+
+    extern const unsigned int NumPlayers;
     extern const unsigned int MaxPlayers;
 
     extern const int DefaultHealthPoints;

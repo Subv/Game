@@ -1,5 +1,6 @@
 #include "Utils.h"
 #include "SharedDefines.h"
+#include "ResourceManager.h"
 #include <cmath>
 #include <vector>
 #include <string>
@@ -9,6 +10,9 @@
 
 namespace Common
 {
+    const std::string KeyBindingsFile = sResourceManager->ResourcesDir + "Bindings.bnd";
+
+    const unsigned int NumPlayers = 2;
     const unsigned int MaxPlayers = 5;
 
     const int DefaultHealthPoints = 100;
