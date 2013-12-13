@@ -25,6 +25,7 @@ class Game
 {
 public:
     friend Map;
+    friend Input;
 
     Game();
     ~Game();
@@ -45,10 +46,11 @@ public:
     bool DebugEnabled() const { return debugMode; }
 
     Player* GetPlayer(int index = 0);
+
+    Input InputHandler;
 private:
     static Game* _instance; // Used to store the singleton
 
-    Input InputHandler;
     sf::RenderWindow window;
 
     std::list<Entity*> Entities;

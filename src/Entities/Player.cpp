@@ -3,6 +3,7 @@
 #include "ResourceManager.h"
 #include "SharedDefines.h"
 #include "Game.h"
+#include "Input.h"
 
 Player::Player(Game* _game, int index, std::string texture) : Unit(_game, texture), PlayerNumber(index)
 {
@@ -19,7 +20,7 @@ void Player::Update(sf::Time const diff)
     if (PlayerNumber == 0)
     {
         // Handle movement for player 1
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+        if (game->InputHandler.IsActive(ACTION_MOVE_LEFT))
         {
             if (!Vehicle)
             {
@@ -29,7 +30,7 @@ void Player::Update(sf::Time const diff)
             else
                 Velocity.x += -Common::HorizontalMoveSpeed;
         }
-        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+        else if (game->InputHandler.IsActive(ACTION_MOVE_RIGHT))
         {
             if (!Vehicle)
             {

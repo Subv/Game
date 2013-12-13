@@ -12,9 +12,12 @@
 
 Game* Game::_instance = nullptr;
 
-Game::Game() : window(sf::VideoMode(1000, 600), "Game"), CurrentMap(nullptr), MenuMap(nullptr), fps(0), debugMode(false), State(GAME_STATE_NONE), PreviousState(GAME_STATE_NONE)
+Game::Game() : window(sf::VideoMode(1000, 600), "Game"), CurrentMap(nullptr), MenuMap(nullptr), fps(0), 
+debugMode(false), State(GAME_STATE_NONE), PreviousState(GAME_STATE_NONE),
+InputHandler(this)
 {
     window.setFramerateLimit(120);
+    window.setKeyRepeatEnabled(false);
 }
 
 Game::~Game()
@@ -63,14 +66,11 @@ void Game::Start()
 void Game::Update(sf::Time const diff)
 {
     // Handle the events
-    sf::Event event;
+    /*sf::Event event;
     while (window.pollEvent(event))
     {
         switch (event.type)
         {
-            case sf::Event::Closed:
-                window.close();
-                return;
             case sf::Event::LostFocus:
                 PreviousState = State;
                 State = GAME_STATE_PAUSED;
@@ -88,21 +88,6 @@ void Game::Update(sf::Time const diff)
                 {
                     case sf::Keyboard::Q:
                         GetPlayer()->EmitParticle(sf::seconds(1), true);
-                        break;
-                    case sf::Keyboard::P:
-                        if (State == GAME_STATE_PAUSED)
-                        {
-                            State = PreviousState;
-                            PreviousState = GAME_STATE_NONE;
-                        }
-                        else
-                        {
-                            PreviousState = State;
-                            State = GAME_STATE_PAUSED;
-                        }
-                        break;
-                    case sf::Keyboard::T:
-                        debugMode ^= true; // Toggle debug draws
                         break;
                     case sf::Keyboard::Up:
                         if (State == GAME_STATE_MENU)
@@ -129,7 +114,20 @@ void Game::Update(sf::Time const diff)
                 break;
             }
         }
-    }
+    }*/
+
+    InputHandler.Update(window);
+
+    if (InputHandler.IsActive(ACTION_ENABLE_DEBUG))
+        debugMode ^= true;
+
+    if (InputHandler.IsActive(ACTION_ENTER))
+        if (State == GAME_STATE_MENU)
+            MenuMap->ChangeMenu(false);
+
+    if (InputHandler.IsActive(ACTION_JUMP))
+        if (State == GAME_STATE_PLAYING)
+            GetPlayer()->Jump();
 
     if (State == GAME_STATE_PAUSED)
         return;
