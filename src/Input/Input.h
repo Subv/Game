@@ -55,22 +55,15 @@ public:
             int JoystickButton;
             sf::Joystick::Axis JoystickAxis;
             sf::Event::EventType Event;
+
+            ButtonKey(sf::Event::EventType ev) : Event(ev) { }
+            ButtonKey(sf::Keyboard::Key key) : KeyboardKey(key) {}
+            ButtonKey(int key) : JoystickButton(key) {}
+            ButtonKey(sf::Joystick::Axis axis) : JoystickAxis(axis) {}
         };
     public:
         template<typename T = sf::Keyboard::Key>
-        InputButton(ButtonDevice device, ButtonType type, T k = sf::Keyboard::Space, std::function<void(thor::ActionContext<Actions>)>* callback = nullptr) : Device(device), Type(type), Callback(callback) {}
-
-        template<>
-        InputButton(ButtonDevice device, ButtonType type, sf::Keyboard::Key key, std::function<void(thor::ActionContext<Actions>)>* callback) : Device(device), Type(type), Callback(callback) { Button.KeyboardKey = key; }
-        
-        template<>
-        InputButton(ButtonDevice device, ButtonType type, sf::Joystick::Axis axis, std::function<void(thor::ActionContext<Actions>)>* callback) : Device(device), Type(type), Callback(callback) { Button.JoystickAxis = axis; }
-
-        template<>
-        InputButton(ButtonDevice device, ButtonType type, int key, std::function<void(thor::ActionContext<Actions>)>* callback) : Device(device), Type(type), Callback(callback) { Button.JoystickButton = key; }
-
-        template<>
-        InputButton(ButtonDevice device, ButtonType type, sf::Event::EventType key, std::function<void(thor::ActionContext<Actions>)>* callback) : Device(device), Type(type), Callback(callback) { Button.Event = key; }
+        InputButton(ButtonDevice device, ButtonType type, T k = sf::Keyboard::Space, std::function<void(thor::ActionContext<Actions>)>* callback = nullptr) : Device(device), Type(type), Button(k), Callback(callback) {}
 
         ButtonDevice Device;
         ButtonType Type;
