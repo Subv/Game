@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include <list>
 #include <functional>
+#include <vector>
 
 enum Actions
 {
@@ -75,19 +76,26 @@ public:
     ~Input();
 
     void LoadBindings();
+    void SaveBindings();
+
     void LoadActions();
     void Update(sf::RenderWindow& window);
 
-    bool IsActive(Actions action) const;
+    bool IsActive(unsigned int player, Actions action) const;
 
     // Define event handlers
     void OnExit(thor::ActionContext<Actions> context);
     void TogglePause(thor::ActionContext<Actions> context);
 
-    thor::ActionMap<Actions> KeyActions;
-    thor::ActionMap<Actions>::CallbackSystem Callbacks;
+
+    // Misc stuff
+    static bool IsSystemAction(Actions action);
+
+    std::vector<thor::ActionMap<Actions>*> KeyActions;
+    std::vector<thor::ActionMap<Actions>::CallbackSystem*> PlayerCallbacks;
+    thor::ActionMap<Actions>::CallbackSystem SystemCallbacks;
     typedef std::unordered_multimap<Actions, InputButton> BindingsMap;
-    BindingsMap KeyBindings;
+    std::vector<BindingsMap> KeyBindings;
     Game* game;
 };
 #endif

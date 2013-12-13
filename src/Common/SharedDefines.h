@@ -13,6 +13,8 @@ enum TypeId
 
 namespace Common
 {
+    extern const unsigned int MaxPlayers;
+
     extern const int DefaultHealthPoints;
     extern const float GravityAcceleration;
 

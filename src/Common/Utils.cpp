@@ -1,10 +1,16 @@
 #include "Utils.h"
 #include "SharedDefines.h"
 #include <cmath>
+#include <vector>
+#include <string>
+#include <regex>
 #include <limits>
+#include <iostream>
 
 namespace Common
 {
+    const unsigned int MaxPlayers = 5;
+
     const int DefaultHealthPoints = 100;
     const float GravityAcceleration = 500.f;
 
@@ -29,5 +35,15 @@ namespace Utils
             return COMPARE_LESS_THAN;
         
         return COMPARE_DIFFERENT;
+    }
+
+    std::vector<std::string> Split(const std::string& input, const std::string& regex)
+    {
+        std::regex ws_re(regex); // whitespace
+        std::vector<std::string> out;
+        std::copy(std::sregex_token_iterator(input.begin(), input.end(), ws_re, -1),
+            std::sregex_token_iterator(),
+            std::back_inserter(out));
+        return out;
     }
 }

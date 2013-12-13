@@ -118,16 +118,12 @@ void Game::Update(sf::Time const diff)
 
     InputHandler.Update(window);
 
-    if (InputHandler.IsActive(ACTION_ENABLE_DEBUG))
+    if (InputHandler.IsActive(0, ACTION_ENABLE_DEBUG))
         debugMode ^= true;
 
-    if (InputHandler.IsActive(ACTION_ENTER))
+    if (InputHandler.IsActive(0, ACTION_ENTER))
         if (State == GAME_STATE_MENU)
             MenuMap->ChangeMenu(false);
-
-    if (InputHandler.IsActive(ACTION_JUMP))
-        if (State == GAME_STATE_PLAYING)
-            GetPlayer()->Jump();
 
     if (State == GAME_STATE_PAUSED)
         return;
@@ -229,9 +225,10 @@ void Game::PrepareWorld()
         Player* player1 = new Player(this, 0, "p1/p1_walk08.png");
         player1->LoadTexture();
         CurrentMap->AddPlayer(player1);
-        /*Player* player2 = new Player(this, 1);
+        
+        Player* player2 = new Player(this, 1, "p1/p1_walk08.png");
         player2->LoadTexture();
-        CurrentMap->AddPlayer(player2);*/
+        CurrentMap->AddPlayer(player2);
 
 
         // Test entity
@@ -242,7 +239,7 @@ void Game::PrepareWorld()
         Entities.push_back(tst);
 
         Players.push_back(player1);
-        //Players.push_back(player2);
+        Players.push_back(player2);
         State = GAME_STATE_PLAYING;
     });
 

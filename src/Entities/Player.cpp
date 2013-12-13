@@ -17,44 +17,34 @@ Player::~Player()
 
 void Player::Update(sf::Time const diff)
 {
-    if (PlayerNumber == 0)
+    if (game->InputHandler.IsActive(PlayerNumber, ACTION_JUMP))
+        Jump();
+
+    // Handle movement
+    if (game->InputHandler.IsActive(PlayerNumber, ACTION_MOVE_LEFT))
     {
-        // Handle movement for player 1
-        if (game->InputHandler.IsActive(ACTION_MOVE_LEFT))
+        if (!Vehicle)
         {
-            if (!Vehicle)
-            {
-                LoadMoveTexture(2);
-                Velocity.x = -Common::HorizontalMoveSpeed;
-            }
-            else
-                Velocity.x += -Common::HorizontalMoveSpeed;
-        }
-        else if (game->InputHandler.IsActive(ACTION_MOVE_RIGHT))
-        {
-            if (!Vehicle)
-            {
-                LoadMoveTexture(1);
-                Velocity.x = Common::HorizontalMoveSpeed;
-            }
-            else
-                Velocity.x += Common::HorizontalMoveSpeed;
-        }
-        else
-        {
-            LoadMoveTexture(0);
-            if (!Vehicle)
-                StopHorizontalMovement();
-        }
-    }
-    else if (PlayerNumber == 1)
-    {
-        // Handle movement for player 2
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+            LoadMoveTexture(2);
             Velocity.x = -Common::HorizontalMoveSpeed;
-        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-            Velocity.x = Common::HorizontalMoveSpeed;
+        }
         else
+            Velocity.x += -Common::HorizontalMoveSpeed;
+    }
+    else if (game->InputHandler.IsActive(PlayerNumber, ACTION_MOVE_RIGHT))
+    {
+        if (!Vehicle)
+        {
+            LoadMoveTexture(1);
+            Velocity.x = Common::HorizontalMoveSpeed;
+        }
+        else
+            Velocity.x += Common::HorizontalMoveSpeed;
+    }
+    else
+    {
+        LoadMoveTexture(0);
+        if (!Vehicle)
             StopHorizontalMovement();
     }
     

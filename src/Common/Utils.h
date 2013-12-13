@@ -1,6 +1,8 @@
 #ifndef UTILS_H
 #define UTILS_H
 #include <limits>
+#include <vector>
+#include <string>
 
 namespace Utils
 {
@@ -12,5 +14,6 @@ namespace Utils
         COMPARE_GREATER_THAN
     };
     ComparisonResult CompareFloats(float x, float y, double epsilon = std::numeric_limits<double>::epsilon());
+    std::vector<std::string> Split(const std::string& input, const std::string& regex);
 }
 #endif
