@@ -225,17 +225,9 @@ void Game::PrepareWorld()
         for (unsigned int i = 0; i < Common::NumPlayers; ++i)
         {
             Player* player = new Player(this, i, "p1/p1_walk08.png");
-            player->LoadTexture();
             CurrentMap->AddPlayer(player);
             Players.push_back(player);
         }
-
-        // Test entity
-        /*GameObject* tst = new GameObject(this, "coinGold.png");
-        tst->LoadTexture();
-        tst->SetPosition(sf::Vector2f(7 * 70.f, 3 * 70.f));
-        CurrentMap->AddEntity(tst);
-        Entities.push_back(tst);*/
 
         State = GAME_STATE_PLAYING;
     });

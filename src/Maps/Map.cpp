@@ -90,7 +90,6 @@ void Map::Load()
             else if (TileData[i][j] == "A")
             {
                 GameObject* coin = new GameObject(game, "coinGold.png");
-                coin->LoadTexture();
                 coin->SetPosition(sf::Vector2f(mapPosition.x, mapPosition.y - 20.f));
                 coin->AddToMap(this);
                 game->Entities.push_back(coin);
@@ -112,6 +111,7 @@ void Map::Load()
 
 void Map::Update(sf::Time diff)
 {
+    // Remove the objects that are due to be removed
     while (!RemoveQueue.empty())
     {
         Entity*& removed = RemoveQueue.front();

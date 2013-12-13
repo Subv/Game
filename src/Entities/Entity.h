@@ -42,7 +42,7 @@ public:
     virtual bool Intersects(Entity const* other) const;
     virtual void HandleCollision(Entity* collider) { }
 
-    virtual void AddToMap(Map* _map) { map = _map; }
+    virtual void AddToMap(Map* _map) { LoadTexture(); map = _map; }
     void RemoveFromWorld();
 
     virtual void StopHorizontalMovement();
