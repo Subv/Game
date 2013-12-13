@@ -110,6 +110,8 @@ class THOR_API Action
 		// Test if active and store relevant events
 		bool						isActive(const detail::EventBuffer& buffer, detail::ActionResult& out) const;
 
+        // Tests if the current action is valid
+        bool                        isValid() const;
 
 	// ---------------------------------------------------------------------------------------------------------------------------
 	// Private member functions

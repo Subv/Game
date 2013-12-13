@@ -105,6 +105,11 @@ bool Action::isActive(const detail::EventBuffer& buffer, detail::ActionResult& o
 	return mOperation->isActionActive(buffer, out);
 }
 
+bool Action::isValid() const
+{
+    return mOperation;
+}
+
 Action::Action(detail::ActionNode::CopiedPtr operation)
 {
 	mOperation.swap(operation);

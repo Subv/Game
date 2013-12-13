@@ -5,6 +5,8 @@
 #include <SFML/System.hpp>
 #include <list>
 
+#include "Input.h"
+
 class Entity;
 class Map;
 class Menu;
@@ -46,6 +48,7 @@ public:
 private:
     static Game* _instance; // Used to store the singleton
 
+    Input InputHandler;
     sf::RenderWindow window;
 
     std::list<Entity*> Entities;

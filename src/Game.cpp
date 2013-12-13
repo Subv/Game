@@ -8,6 +8,8 @@
 #include "Menu.h"
 #include "ResourceManager.h"
 
+#include <Thor/Input.hpp>
+
 Game* Game::_instance = nullptr;
 
 Game::Game() : window(sf::VideoMode(1000, 600), "Game"), CurrentMap(nullptr), MenuMap(nullptr), fps(0), debugMode(false), State(GAME_STATE_NONE), PreviousState(GAME_STATE_NONE)
