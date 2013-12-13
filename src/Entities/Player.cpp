@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "ResourceManager.h"
 #include "SharedDefines.h"
+#include "Game.h"
 
 Player::Player(Game* _game, int index, std::string texture) : Unit(_game, texture), PlayerNumber(index)
 {

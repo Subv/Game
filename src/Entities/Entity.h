@@ -5,6 +5,11 @@
 #include <SFML/Graphics.hpp>
 #include "SharedDefines.h"
 
+#include <Thor/Particles.hpp>
+#include <Thor/Animation.hpp>
+#include <Thor/Vectors/PolarVector.hpp>
+#include <Thor/Math/Distributions.hpp>
+
 class Game;
 class Map;
 class Unit;
@@ -39,6 +44,11 @@ public:
 
     virtual bool IsUnit() { return false; }
     
+    virtual void EmitParticle(sf::Time const span, bool up);
+    virtual void Flicker(sf::Time const span);
+
+    sf::Vector2f GetCenter() const;
+
     Unit* ToUnit();
     sf::Vector2f NewPosition;
     sf::Vector2f Position;
@@ -47,6 +57,10 @@ public:
 
     sf::Vector2f Velocity;
     sf::Vector2f Acceleration;
+    
+    thor::UniversalEmitter ParticleEmitter;
+    thor::ParticleSystem ParticleSystem;
+
 protected:
     bool inAir;
     Map* map;

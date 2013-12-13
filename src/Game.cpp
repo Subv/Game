@@ -84,6 +84,9 @@ void Game::Update(sf::Time const diff)
             {
                 switch (event.key.code)
                 {
+                    case sf::Keyboard::Q:
+                        GetPlayer()->EmitParticle(sf::seconds(1), true);
+                        break;
                     case sf::Keyboard::P:
                         if (State == GAME_STATE_PAUSED)
                         {

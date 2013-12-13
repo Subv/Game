@@ -21,6 +21,13 @@ Entity::Entity(Game* _game, std::string model) : game(_game), inAir(true), Textu
     Velocity.y = 0.0f;
     Acceleration.x = 0.0f;
     Acceleration.y = 0.0f;
+
+    // Setup the particle system
+    ParticleSystem.setTexture(sResourceManager->GetTexture("particle.png"));
+
+    // Add particle affectors
+    ParticleSystem.addAffector(thor::TorqueAffector(100.f));
+    ParticleSystem.addAffector(thor::ForceAffector(sf::Vector2f(0.f, Common::GravityAcceleration)));
 }
 
 Entity::~Entity()
@@ -31,12 +38,16 @@ Entity::~Entity()
 void Entity::Draw()
 {
     game->GetWindow().draw(sprite);
+    game->GetWindow().draw(ParticleSystem);
 }
 
 void Entity::Update(sf::Time const diff)
 {
     if (!map)
         return;
+
+    ParticleEmitter.setParticlePosition(GetCenter());
+    ParticleSystem.update(diff);
 
     // Now we do collision detection and determine if we can actually move there
     std::list<CollisionInfo> collisions;
@@ -159,4 +170,23 @@ void Entity::StopVerticalMovement()
 {
     Velocity.y = 0.f;
     Acceleration.y = 0.f;
+}
+
+void Entity::EmitParticle(sf::Time const span, bool up)
+{
+    float verticalModifier = up ? -1.f : 1.f;
+    ParticleEmitter.setEmissionRate(30.f);
+    ParticleEmitter.setParticleLifetime(sf::seconds(5.f));
+    ParticleEmitter.setParticleVelocity(thor::Distributions::deflect(thor::PolarVector2f(sf::Vector2f(0.f, verticalModifier * Common::JumpVelocity)), 40.f));
+    ParticleSystem.addEmitter(thor::refEmitter(ParticleEmitter), span);
+}
+
+sf::Vector2f Entity::GetCenter() const
+{
+    return sf::Vector2f(Position.x + GetWidth() / 2.f, Position.y + GetHeight() / 2.f);
+}
+
+void Entity::Flicker(sf::Time const span)
+{
+    
 }

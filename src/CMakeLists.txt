@@ -15,6 +15,8 @@ include_directories(
 	${CMAKE_CURRENT_SOURCE_DIR}/Maps/Tiles
 	${CMAKE_CURRENT_SOURCE_DIR}/Menu
 	${CMAKE_SOURCE_DIR}/dep/SFML-2.1/include
+	${CMAKE_SOURCE_DIR}/dep/Thor/include
+	${CMAKE_SOURCE_DIR}/dep/Thor/extlibs/Aurora/include
 )
 
 add_executable(Game
@@ -25,6 +27,7 @@ target_link_libraries(Game
 	sfml-graphics
 	sfml-window
 	sfml-system
+	thor
 )
 
 IF (UNIX)

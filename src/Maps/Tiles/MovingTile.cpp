@@ -33,6 +33,7 @@ void MovingTile::Update(sf::Time const diff)
 
 void MovingTile::OnTopCollision(Entity* collider)
 {
+    EmitParticle(sf::milliseconds(500), false);
     if (collider->IsUnit())
         collider->ToUnit()->Vehicle = this;
 

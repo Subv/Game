@@ -5,6 +5,10 @@
 #include "Entity.h"
 #include "Unit.h"
 
+#include <Thor/Particles.hpp>
+#include <Thor/Animation.hpp>
+#include <Thor/Vectors/PolarVector.hpp>
+#include <Thor/Math/Distributions.hpp>
 class Game;
 
 class Player : public Unit
