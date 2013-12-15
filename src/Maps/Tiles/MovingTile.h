@@ -14,10 +14,10 @@ public:
     ~MovingTile();
 
     void Update(sf::Time const diff) override;
-    void OnTopCollision(Entity* collider) override;
+    void OnTopCollision(Entity* collider, sf::FloatRect intersection) override;
     void LeaveCollision(Entity* collider) override;
 
-    void HandleFloor(Entity* entity) override;
+    void HandleFloor(Entity* entity, bool& floor) override;
 
     void StopHorizontalMovement() override;
     void StopVerticalMovement() override;

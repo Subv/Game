@@ -70,40 +70,28 @@ void Entity::Update(sf::Time const diff)
             rect2.setFillColor(sf::Color::Transparent);
             rect2.setOutlineThickness(3.f);
             game->GetWindow().draw(rect2);
+
+            sf::RectangleShape rect(sf::Vector2f(collision.Intersection.width, collision.Intersection.height));
+            rect.setPosition(collision.Intersection.left, collision.Intersection.top);
+            game->GetWindow().draw(rect);
         }
 
         // Detect vertical collisions
-        if (Utils::CompareFloats(collision.Intersection.top + collision.Intersection.height, collision.Block->GetPositionY()) == Utils::COMPARE_GREATER_THAN &&
-            Utils::CompareFloats(collision.Intersection.top + collision.Intersection.height, collision.Block->GetPositionY() + collision.Block->GetHeight()) == Utils::COMPARE_LESS_THAN &&
-            Utils::CompareFloats(sprite.getGlobalBounds().top + sprite.getGlobalBounds().height, collision.Block->GetPositionY(), 10.f) == Utils::COMPARE_EQUAL)
+        if (collision.Block->IntersectTop(this, collision.Intersection))
         {
-            floor = true; // There's a floor tile below us
-
-            if (Unit* unit = ToUnit()) // Stop jumping if we're an unit
-                unit->jumping = false;
+            collision.Block->HandleFloor(this, floor);
 
             // Check that we're actually heading towards the tile
             if (Velocity.y > 0.f)
             {
-                // We touched the top part of the tile, stop falling
-                StopVerticalMovement();
-                NewPosition.y = collision.Intersection.top - sprite.getGlobalBounds().height + 1.f; // Don't go too low, correct the position if that happens
+                collision.Block->OnTopCollision(this, collision.Intersection);
                 
-                if (collision.Block->IsSpecial())
-                    collision.Block->ToSpecialTile()->OnTopCollision(this);
                 if (Type == TYPEID_PLAYER)
                     std::cout << "Top collision" << std::endl;
             }
-
-            if (collision.Block->IsSpecial())
-                collision.Block->ToSpecialTile()->HandleFloor(this);
         }
         // Detect horizontal collisions
-        else if (Utils::CompareFloats(collision.Intersection.top, collision.Block->GetPositionY() + collision.Block->GetHeight() / 2.f) == Utils::COMPARE_LESS_THAN && // If the player is at least halfway below the tile, don't collide
-            ((Utils::CompareFloats(collision.Intersection.left + collision.Intersection.width, collision.Block->GetPositionX()) == Utils::COMPARE_GREATER_THAN &&
-            Utils::CompareFloats(collision.Intersection.left + collision.Intersection.width, collision.Block->GetPositionX() + collision.Block->GetWidth()) == Utils::COMPARE_LESS_THAN) ||
-            (Utils::CompareFloats(collision.Intersection.left, collision.Block->GetPositionX() + collision.Block->GetWidth()) == Utils::COMPARE_LESS_THAN &&
-            Utils::CompareFloats(collision.Intersection.left, collision.Block->GetPositionX()) == Utils::COMPARE_GREATER_THAN)))
+        else if (collision.Block->IntersectSide(this, collision.Intersection))
         {
             if (Utils::CompareFloats(Velocity.x, 0.f) == Utils::COMPARE_GREATER_THAN &&
                 Utils::CompareFloats(collision.Intersection.left + collision.Intersection.width, collision.Block->GetPositionX(), 10.f) == Utils::COMPARE_EQUAL) // If we already trespassed the tile, don't bother with collision handling, for example if the player jumped from below
@@ -207,8 +195,7 @@ void Entity::Flicker(sf::Time const span)
 
 bool Entity::Intersects(Entity const* other) const
 {
-    sf::FloatRect intersection;
-    return sprite.getGlobalBounds().intersects(other->sprite.getGlobalBounds(), intersection);
+    return sprite.getGlobalBounds().intersects(other->sprite.getGlobalBounds());
 }
 
 void Entity::RemoveFromWorld()

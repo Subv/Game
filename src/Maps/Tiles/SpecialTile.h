@@ -14,11 +14,6 @@ public:
     SpecialTile(Game* _game, int x, int y, std::string model);
     virtual ~SpecialTile();
 
-    // Optional handlers
-    virtual void OnTopCollision(Entity* collider) { }
-    virtual void OnLeftCollision(Entity* collider) { }
-    virtual void OnRightCollision(Entity* collider) { }
-    virtual void HandleFloor(Entity* entity) { }
     virtual void LeaveCollision(Entity* collider) { }
     virtual bool IsSpecial() const { return true; }
 

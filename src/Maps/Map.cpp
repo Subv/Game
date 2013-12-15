@@ -65,7 +65,7 @@ void Map::Load()
             if (TileData[i][j] == "J")
                 tile = new Tile(game, j, i, 0, true, "brickWall.png");
             else if (TileData[i][j] == "K")
-                tile = new Tile(game, j, i, 0, true, "grassMid.png");
+                tile = new Tile(game, j, i, 0, true, j == TileData[i].size() - 1 ? "castleHillRight.png" : "grassMid.png");
             else if (TileData[i][j] == "L")
                 tile = new Tile(game, j, i, 0, true, "grassCenter.png");
             else if (TileData[i][j] == "M")
@@ -136,7 +136,11 @@ bool Map::HasCollisionAt(sf::Vector2f pos, Entity* entity, std::list<CollisionIn
     for (auto itr = Tiles.begin(); itr != Tiles.end(); ++itr)
     {
         if ((*itr)->Collidable && (*itr)->Intersects(check, intersection))
+        {
+            if ((*itr)->TextureName == "castleHillRight.png")
+                entity->StopVerticalMovement();
             colliding.push_back(CollisionInfo(intersection, *itr));
+        }
         else if ((*itr)->Collidable && (*itr)->IsSpecial())
             (*itr)->ToSpecialTile()->LeaveCollision(entity);
     }

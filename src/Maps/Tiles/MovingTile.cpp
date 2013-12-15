@@ -31,8 +31,10 @@ void MovingTile::Update(sf::Time const diff)
     SpecialTile::Update(diff);
 }
 
-void MovingTile::OnTopCollision(Entity* collider)
+void MovingTile::OnTopCollision(Entity* collider, sf::FloatRect intersection)
 {
+    SpecialTile::OnTopCollision(collider, intersection);
+
     EmitParticle(sf::milliseconds(500), false);
     if (collider->IsUnit())
         collider->ToUnit()->Vehicle = this;
@@ -63,7 +65,7 @@ void MovingTile::StopVerticalMovement()
     Displacement = 0.f;
 }
 
-void MovingTile::HandleFloor(Entity* entity)
+void MovingTile::HandleFloor(Entity* entity, bool& floor)
 {
     // Just in case that the entity didn't actually fall upon us, but instead walked at the same height level
     if (Passengers.find(entity) == Passengers.end())
@@ -72,4 +74,6 @@ void MovingTile::HandleFloor(Entity* entity)
             entity->ToUnit()->Vehicle = this;
         Passengers.insert(entity);
     }
+
+    SpecialTile::HandleFloor(entity, floor);
 }

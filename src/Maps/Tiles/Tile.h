@@ -20,6 +20,15 @@ public:
     virtual bool Intersects(sf::FloatRect& check, sf::FloatRect& intersection) const;
     virtual bool IsSpecial() const { return false; }
 
+    virtual bool IntersectTop(Entity* entity, sf::FloatRect check) const;
+    virtual bool IntersectSide(Entity* entity, sf::FloatRect check) const;
+
+    // Collision handlers
+    virtual void HandleFloor(Entity* entity, bool& floor);
+    virtual void OnTopCollision(Entity* collider, sf::FloatRect intersection);
+    virtual void OnLeftCollision(Entity* collider);
+    virtual void OnRightCollision(Entity* collider);
+
     SpecialTile* ToSpecialTile();
 
     bool Collidable;

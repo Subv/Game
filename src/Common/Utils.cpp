@@ -41,6 +41,19 @@ namespace Utils
         return COMPARE_DIFFERENT;
     }
 
+    // Pass the lines in the form Ax + By = C as (A, B, C) in the vector
+    bool LinesIntersect(sf::Vector3f line1, sf::Vector3f line2, sf::Vector2f& intersection)
+    {
+        float delta = line1.x * line2.y - line2.x * line1.y;
+        
+        if (CompareFloats(delta, 0.f) == COMPARE_EQUAL)
+            return false;
+
+        intersection.x = (line2.y * line1.z - line1.y * line2.z) / delta;
+        intersection.y = (line1.x * line2.z - line2.x * line1.z) / delta;
+        return true;
+    }
+
     std::vector<std::string> Split(const std::string& input, const std::string& regex)
     {
         std::regex ws_re(regex); // whitespace
